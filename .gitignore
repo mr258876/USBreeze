@@ -1,0 +1,60 @@
+# ===== Keil MDK-ARM / uVision =====
+# 用户/本机个性化：窗口布局、断点等（不需要进版本库）
+#*.uvoptx
+*.uvguix*
+*.rtebuild
+*.build_log*
+*.bak
+*.htm
+
+# J-Link/仿真产生的临时文件
+JLinkLog.txt
+JLinkSettings.ini
+
+# 调试配置（通常是本机相关）
+DebugConfig/
+*.crunlog
+
+# 编译输出目录（常见命名）
+Objects/
+Listings/
+Output/
+Build/
+out/
+bin/
+
+# 编译产物（无论放哪）
+*.axf
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+*.o
+*.obj
+*.d
+*.crf
+*.sbr
+*.tdf
+*.dep
+*.iex
+*.uvguix.*
+
+# 中间符号/汇编等
+*.pbi
+*.pbd
+*.sct.tmp
+
+# 如果使用 ARMCLANG/ARMCC 产生的其他中间文件
+*.scvd   # 设备系统视图（若自定义才保留）
+*.log
+
+# ---- RTE（Keil Pack 生成的目录）----
+# 大多数 RTE 内容可由 Pack 自动再生成，不必提交
+# 但保留你的手改配置（例如 Config/ 里的 *.h）
+RTE/
+!RTE/Config/**
+!RTE/Device/**
+!RTE/Board/**
+!RTE/RTX_Config.c
+!RTE/_Target_*/RTE_Components.h

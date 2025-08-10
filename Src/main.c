@@ -9,7 +9,7 @@
 #include "rl_usb.h"
 #include "Hostcommunication.h"
 
-osThreadDef(Host_Communication_Thread, osPriorityNormal, 1, 512U);
+//osThreadDef(Host_Communication_Thread, osPriorityNormal, 1, 512U);
 
 /*
  * main: initialize and start the system
@@ -25,7 +25,7 @@ int main (void) {
 		//GPIO_WriteBit(GPIOA, GPIO_Pin_8, 1);
 		GPIO_WriteBit(GPIOD, GPIO_Pin_2, 1);
 		
-		if (osThreadCreate(osThread(Host_Communication_Thread), NULL) == NULL)
+		//if (osThreadCreate(osThread(Host_Communication_Thread), NULL) == NULL)
 		{
 				// Thread Create Failed
 				// pass

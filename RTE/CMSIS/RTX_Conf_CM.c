@@ -60,14 +60,14 @@
 //   <i> Defines the number of threads with user-provided stack size.
 //   <i> Default: 0
 #ifndef OS_PRIVCNT
- #define OS_PRIVCNT     4
+ #define OS_PRIVCNT     2
 #endif
  
 //   <o>Total stack size [bytes] for threads with user-provided stack size <0-1048576:8><#/4>
 //   <i> Defines the combined stack size for threads with user-provided stack size.
 //   <i> Default: 0
 #ifndef OS_PRIVSTKSIZE
- #define OS_PRIVSTKSIZE 640       // this stack size value is in words
+ #define OS_PRIVSTKSIZE 256       // this stack size value is in words
 #endif
  
 //   <q>Stack overflow checking

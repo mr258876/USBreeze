@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'Project Fan' 
+ * Project: 'USBreeze' 
  * Target:  'Target 1' 
  */
 
@@ -25,13 +25,15 @@
 /*  Keil.MDK-Plus::USB:Device:6.15.0 */
 #define RTE_USB_Device_0                /* USB Device 0 */
 
-/*  Keil.MDK-Plus::USB:Device:CDC:6.15.0 */
-#define RTE_USB_Device_CDC_0            /* USB Device CDC instance 0 */
+/*  Keil.MDK-Plus::USB:Device:HID:6.15.0 */
+#define RTE_USB_Device_HID_0            /* USB Device HID instance 0 */
 
 /*  Keil::CMSIS Driver:USB Device:2.2 */
 #define RTE_Drivers_USBD0               /* Driver USBD0 */
 /*  Keil::Device:StdPeriph Drivers:ADC:3.6.0 */
 #define RTE_DEVICE_STDPERIPH_ADC
+/*  Keil::Device:StdPeriph Drivers:DMA:3.6.0 */
+#define RTE_DEVICE_STDPERIPH_DMA
 /*  Keil::Device:StdPeriph Drivers:EXTI:3.6.0 */
 #define RTE_DEVICE_STDPERIPH_EXTI
 /*  Keil::Device:StdPeriph Drivers:Framework:3.6.0 */
