@@ -22,7 +22,7 @@
 //       <o.0..3>Interrupt IN Endpoint Number
 //                 <1=>1   <2=>2   <3=>3   <4=>4   <5=>5   <6=>6   <7=>7
 //         <8=>8   <9=>9   <10=>10 <11=>11 <12=>12 <13=>13 <14=>14 <15=>15
-#define USBD_HID0_EP_INT_IN                       3
+#define USBD_HID0_EP_INT_IN                       1
 
 //       <h>Endpoint Settings
 //         <i>Parameters are used to create Endpoint Descriptors
@@ -71,7 +71,7 @@
 //         <0=>Not used
 //                 <1=>1   <2=>2   <3=>3   <4=>4   <5=>5   <6=>6   <7=>7
 //         <8=>8   <9=>9   <10=>10 <11=>11 <12=>12 <13=>13 <14=>14 <15=>15
-#define USBD_HID0_EP_INT_OUT                      3
+#define USBD_HID0_EP_INT_OUT                      1
 
 //       <h>Endpoint Settings
 //         <i>Parameters are used to create USB Descriptors, HID Device Descriptor
@@ -119,38 +119,38 @@
 //   <i>and for memory allocation in the USB component.
 //
 //     <s.126>HID Interface String
-#define USBD_HID0_STR_DESC                        L"USB_HID0"
+#define USBD_HID0_STR_DESC                        L"USBreeze_HID_Fan"
 
 //     <o.0..4>Number of Input Reports <1-32>
 //     <i>Configures max 'rid' value for USBD_HID0_GetReport and USBD_HID_GetReportTrigger
-#define USBD_HID0_IN_REPORT_NUM                   1
+#define USBD_HID0_IN_REPORT_NUM                   2
 
 //     <o.0..4>Number of Output Reports <1-32>
 //     <i>Configures max 'rid' value for USBD_HID0_SetReport
-#define USBD_HID0_OUT_REPORT_NUM                  1
+#define USBD_HID0_OUT_REPORT_NUM                  2
 
 //     <o.0..15>Maximum Input Report Size (in bytes) <1-65535>
 //     <i>Allocates memory and configures 'len' value for USBD_HID0_GetReport
 //     <i>and USBD_HID_GetReportTrigger
-#define USBD_HID0_IN_REPORT_MAX_SZ                1
+#define USBD_HID0_IN_REPORT_MAX_SZ                33
 
 //     <o.0..15>Maximum Output Report Size (in bytes) <1-65535>
 //     <i>Allocates memory and configures 'len' value for USBD_HID0_SetReport
 //     <i>when rtype=HID_REPORT_OUTPUT.
-#define USBD_HID0_OUT_REPORT_MAX_SZ               1
+#define USBD_HID0_OUT_REPORT_MAX_SZ               33
 
 //     <o.0..15>Maximum Feature Report Size (in bytes) <1-65535>
 //     <i>Allocates memory and configures 'len' value for USBD_HID0_SetReport
 //     <i>when rtype=HID_REPORT_FEATURE
-#define USBD_HID0_FEAT_REPORT_MAX_SZ              1
+#define USBD_HID0_FEAT_REPORT_MAX_SZ              9
 
 //     <e.0>Use User Provided HID Report Descriptor
 //     <i>User needs to provide HID Report Descriptor in array
 //     <i>const uint8_t usbd_hid0_report_descriptor[]
-#define USBD_HID0_USER_REPORT_DESCRIPTOR          0
+#define USBD_HID0_USER_REPORT_DESCRIPTOR          1
 
 //       <o>User Provided HID Report Descriptor Size (in bytes) <1-65535>
-#define USBD_HID0_USER_REPORT_DESCRIPTOR_SIZE     33
+#define USBD_HID0_USER_REPORT_DESCRIPTOR_SIZE     54
 
 //     </e>
 //   </h>

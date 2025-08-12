@@ -19,14 +19,18 @@
 /*  ARM::CMSIS:RTOS:Keil RTX:4.82.0 */
 #define RTE_CMSIS_RTOS                  /* CMSIS-RTOS */
         #define RTE_CMSIS_RTOS_RTX              /* CMSIS-RTOS Keil RTX */
-/*  Keil.MDK-Plus::USB:CORE:Release:6.15.0 */
+/*  Keil.ARM Compiler::Compiler:Event Recorder:DAP:1.4.0 */
+#define RTE_Compiler_EventRecorder
+          #define RTE_Compiler_EventRecorder_DAP
+/*  Keil.MDK-Plus::USB:CORE:Debug:6.15.0 */
 #define RTE_USB_Core                    /* USB Core */
-          #define RTE_USB_Core_Release            /* USB Core Release Version */
+          #define RTE_USB_Core_Debug              /* USB Core Debug Version */
 /*  Keil.MDK-Plus::USB:Device:6.15.0 */
 #define RTE_USB_Device_0                /* USB Device 0 */
 
 /*  Keil.MDK-Plus::USB:Device:HID:6.15.0 */
 #define RTE_USB_Device_HID_0            /* USB Device HID instance 0 */
+#define RTE_USB_Device_HID_1            /* USB Device HID instance 1 */
 
 /*  Keil::CMSIS Driver:USB Device:2.2 */
 #define RTE_Drivers_USBD0               /* Driver USBD0 */

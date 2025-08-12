@@ -60,11 +60,11 @@
 
 //   <o>Communication Device Class (CDC) <0=>Off <1=>Errors <2=>Errors + API <3=>All
 //   <i>Configure USB Device Communication Device Class event recording
-#define USBD_DEBUG_EVR_CDC              2
+#define USBD_DEBUG_EVR_CDC              1
 
 //   <o>Human Interface Device class (HID) <0=>Off <1=>Errors <2=>Errors + API <3=>All
 //   <i>Configure USB Device Human Interface Device class event recording
-#define USBD_DEBUG_EVR_HID              1
+#define USBD_DEBUG_EVR_HID              2
 
 //   <o>Mass Storage Class (MSC) <0=>Off <1=>Errors <2=>Errors + API <3=>All
 //   <i>Configure USB Device Mass Storage Class event recording

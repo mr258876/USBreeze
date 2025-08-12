@@ -38,7 +38,7 @@
 
 //     <o.0..15>Product ID <0x0000-0xFFFF>
 //     <i>Product ID assigned by manufacturer (idProduct).
-#define USBD0_DEV_DESC_IDPRODUCT        0x8B3F
+#define USBD0_DEV_DESC_IDPRODUCT        0x8BCF
 
 //     <o.0..15>Device Release Number <0x0000-0xFFFF>
 //     <i>Device Release Number in binary-coded decimal (bcdDevice)
@@ -71,11 +71,11 @@
 
 //     <s.126>Manufacturer String
 //     <i>String Descriptor describing Manufacturer.
-#define USBD0_STR_DESC_MAN              L"Keil Software"
+#define USBD0_STR_DESC_MAN              L"Mr258876's"
 
 //     <s.126>Product String
 //     <i>String Descriptor describing Product.
-#define USBD0_STR_DESC_PROD             L"Keil USB Device 0"
+#define USBD0_STR_DESC_PROD             L"USBreeze"
 
 //     <e.0>Serial Number String
 //     <i>Enable Serial Number String.
