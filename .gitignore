@@ -6,6 +6,7 @@
 *.build_log*
 *.bak
 *.htm
+*.scvd
 
 # J-Link/仿真产生的临时文件
 JLinkLog.txt

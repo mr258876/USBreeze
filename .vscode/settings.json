@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "fancontrol.h": "c",
+        "hostcommwarpper.h": "c"
+    }
+}

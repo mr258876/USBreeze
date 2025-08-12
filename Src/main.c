@@ -7,14 +7,17 @@
 #include "FanControl.h"
 #include "bsp.h"
 #include "rl_usb.h"
-#include "Hostcommunication.h"
 
-//osThreadDef(Host_Communication_Thread, osPriorityNormal, 1, 512U);
+#include "EventRecorder.h"
+
+osThreadDef(Fan_Control_thread, osPriorityNormal, 1, 256);
 
 /*
  * main: initialize and start the system
  */
 int main (void) {
+		EventRecorderInitialize(EventRecordAll, 1); // Initialize and start
+	
 		osKernelInitialize ();                    // initialize CMSIS-RTOS
 		
 		// initialize peripherals here
@@ -22,14 +25,8 @@ int main (void) {
 	
 		BSP_Initialize();
 		
-		//GPIO_WriteBit(GPIOA, GPIO_Pin_8, 1);
+		// GPIO_WriteBit(GPIOA, GPIO_Pin_8, 1);
 		GPIO_WriteBit(GPIOD, GPIO_Pin_2, 1);
-		
-		//if (osThreadCreate(osThread(Host_Communication_Thread), NULL) == NULL)
-		{
-				// Thread Create Failed
-				// pass
-		}
 		
 		if (USBD_Initialize(0) != usbOK)
 		{
@@ -37,6 +34,12 @@ int main (void) {
 				//GPIO_WriteBit(GPIOA, GPIO_Pin_8, 0);
 		}
 		USBD_Connect(0);
+		
+		if (osThreadCreate(osThread(Fan_Control_thread), NULL) == NULL)
+		{
+				// Thread Create Failed
+				// pass
+		}
 		
 		// create 'thread' functions that start executing,
 		// example: tid_name = osThreadCreate (osThread(name), NULL);

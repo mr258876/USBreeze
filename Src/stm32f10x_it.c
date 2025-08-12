@@ -162,43 +162,46 @@ void SysTick_Handler(void)
   * @retval None
   */
 #include "FanControl.h"
-void EXTI15_10_IRQHandler(void)// PB12-PB15
+void EXTI9_5_IRQHandler(void)// PB8-PB9
 { 
-    if(EXTI_GetITStatus(EXTI_Line12)!=RESET){
-        EXTI_ClearITPendingBit(EXTI_Line12);
-        Fan_Hall_Count[0]++;
-    }
-    if(EXTI_GetITStatus(EXTI_Line13)!=RESET){
-        EXTI_ClearITPendingBit(EXTI_Line13);
-        Fan_Hall_Count[1]++;
-    }
-		if(EXTI_GetITStatus(EXTI_Line14)!=RESET){
-        EXTI_ClearITPendingBit(EXTI_Line14);
-        Fan_Hall_Count[2]++;
-    }
-		if(EXTI_GetITStatus(EXTI_Line15)!=RESET){
-        EXTI_ClearITPendingBit(EXTI_Line15);
+		if(EXTI_GetITStatus(EXTI_Line8)!=RESET){
+        EXTI_ClearITPendingBit(EXTI_Line8);
         Fan_Hall_Count[3]++;
+    }
+		if(EXTI_GetITStatus(EXTI_Line9)!=RESET){
+        EXTI_ClearITPendingBit(EXTI_Line9);
+        Fan_Hall_Count[2]++;
     }
 }
 
-/**
-  * @brief  This function handles TIM3 interrupt request.
-  * @param  None
-  * @retval None
-  */
-void TIM3_IRQHandler(void){
-    if(TIM_GetITStatus(TIM3, TIM_IT_Update)!= RESET)
-		{
-        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
-				
-				for(int i = 0; i < SYSTEM_FAN_COUNT; i++)
-				{
-						Fan_RPM_Count[i] = (Fan_Hall_Count[i] * 60 * 2) / SYSTEM_FAN_PPR;	// sampled in 0.5s
-						Fan_Hall_Count[i] = 0;
-				}
+void EXTI15_10_IRQHandler(void)// PB10-PB15
+{ 
+		if(EXTI_GetITStatus(EXTI_Line10)!=RESET){
+        EXTI_ClearITPendingBit(EXTI_Line10);
+        Fan_Hall_Count[1]++;
+    }
+		if(EXTI_GetITStatus(EXTI_Line11)!=RESET){
+        EXTI_ClearITPendingBit(EXTI_Line11);
+        Fan_Hall_Count[0]++;
+    }
+    if(EXTI_GetITStatus(EXTI_Line12)!=RESET){
+        EXTI_ClearITPendingBit(EXTI_Line12);
+        Fan_Hall_Count[7]++;
+    }
+    if(EXTI_GetITStatus(EXTI_Line13)!=RESET){
+        EXTI_ClearITPendingBit(EXTI_Line13);
+        Fan_Hall_Count[6]++;
+    }
+		if(EXTI_GetITStatus(EXTI_Line14)!=RESET){
+        EXTI_ClearITPendingBit(EXTI_Line14);
+        Fan_Hall_Count[5]++;
+    }
+		if(EXTI_GetITStatus(EXTI_Line15)!=RESET){
+        EXTI_ClearITPendingBit(EXTI_Line15);
+        Fan_Hall_Count[4]++;
     }
 }
+
 /**
   * @}
   */ 

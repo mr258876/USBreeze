@@ -1,0 +1,52 @@
+[[settings]]
+packingInBytes = 1
+
+[[usagePage]]
+id = 65308
+name = 'Vendor Usage Page'
+
+    [[usagePage.usage]]
+    id = 1
+    name = 'Fan Controls'
+    types = ['CL']
+    
+    [[usagePage.usage]]
+    id = 2
+    name = 'Fan Control Level'
+    types = ['DV']
+
+[[applicationCollection]]
+usage = ['Generic Desktop', 'Computer Chassis Device']
+
+    [[applicationCollection.inputReport]]
+
+        [[applicationCollection.inputReport.logicalCollection]]
+        usage = ['Generic Desktop', 'Sensor Zone']
+
+            [[applicationCollection.inputReport.logicalCollection.variableItem]]
+                usage = ['Generic Desktop', 'RPM']
+                sizeInBits = 32
+                count = 8
+                logicalValueRange = 'maxUnsignedSizeRange'
+
+    [[applicationCollection.outputReport]]
+
+        [[applicationCollection.outputReport.logicalCollection]]
+        usage = ['Generic Desktop', 'Sensor Zone']
+
+            [[applicationCollection.outputReport.logicalCollection.variableItem]]
+                usage = ['Generic Desktop', 'RPM']
+                sizeInBits = 32
+                count = 8
+                logicalValueRange = 'maxUnsignedSizeRange'
+    
+    [[applicationCollection.featureReport]]
+
+        [[applicationCollection.featureReport.logicalCollection]]
+        usage = ['Vendor Usage Page', 'Fan Controls']
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['Vendor Usage Page', 'Fan Control Level']
+                logicalValueRange = [0, 100]
+                count = 8
+
