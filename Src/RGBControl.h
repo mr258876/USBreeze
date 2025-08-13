@@ -2,45 +2,48 @@
 #define _RGB_CONTROL_H
 
 #include <stdint.h>
+#include "cmsis_os.h"
 
-#define RGB_LAMP_COUNT              1
+#define RGB_LAMP_COUNT              16
 #define RGB_LAMPARRAY_KIND          7       // 07 -> LampArrayKindChassis. Referer: Page 330, https://www.usb.org/sites/default/files/hut1_4.pdf
 #define RGB_MIN_UPDATE_INTERVAL     50000   // In Microseconds
 
-enum LampPurposeKind
-{
-    LampPurposeControl = 1,
-    LampPurposeAccent = 2,
-    LampPurposeBranding = 4,
-    LampPurposeStatus = 8,
-    LampPurposeIllumination = 16,
-    LampPurposePresentation = 32,
-};
+#define RGB_BOUNDING_BOX_WIDTH_X    16000  // In Micrometers
+#define RGB_BOUNDING_BOX_DEPTH_Y    10000   // In Micrometers
+#define RGB_BOUNDING_BOX_HEIGHT_Z   10000   // In Micrometers
+
+#define RGB_CHANNELS_PER_LAMP       3
+
+#define RGB_WS2812_PORT             GPIOA
+#define RGB_WS2812_PIN              GPIO_Pin_8
+
+#define RGB_WS2812_BITS_PER_LED     24
+#define RGB_WS2812_BUFFER_SIZE      RGB_WS2812_BITS_PER_LED * 2
+#define RGB_WS2812_ARR              90      // Autoreload value of TIM1
+#define RGB_WS2812_T0H              30		// 1/3 high for a 0bit
+#define RGB_WS2812_T1H              60		// 2/3 high for a 1bit
+#define RGB_WS2812_RESET_CYCLES     200     // 100bits LOW to reset
+
+extern volatile uint16_t RGB_WS2812_Buffer[];    // WS2812 buffer
+extern volatile uint8_t RGB_Lamp_Colors[RGB_LAMP_COUNT * RGB_CHANNELS_PER_LAMP];
 
 typedef __packed struct
 {
-    uint8_t RedChannel;
-    uint8_t GreenChannel;
-    uint8_t BlueChannel;
-    uint8_t IntensityChannel;
-} LampArrayColor;
+    uint16_t PositionXInMillimeters;
+    uint16_t PositionYInMillimeters;
+    uint16_t PositionZInMillimeters;
+} LampPosition;
 
-typedef __packed struct
-{
-    uint16_t LampId;
-    uint32_t PositionXInMicrometers;
-    uint32_t PositionYInMicrometers;
-    uint32_t PositionZInMicrometers;
-    uint32_t UpdateLatencyInMicroseconds;
-    uint32_t LampPurposes;
-    uint8_t RedLevelCount;
-    uint8_t GreenLevelCount;
-    uint8_t BlueLevelCount;
-    uint8_t IntensityLevelCount;
-    uint8_t IsProgrammable;
-    uint8_t LampKey;
-} LampAttributes;
+extern const LampPosition RGB_Lamp_Positions[]; // ID count MUST match the size of RGB_LAMP_COUNT
 
-extern const LampAttributes RGB_Lamp_Attributes[]; // ID count MUST match the size of RGB_LAMP_COUNT
+extern osMessageQId RGB_Update_Msg_Queue;
+
+void RGB_Control_thread(const void * dummy);
+
+void RGB_Control_Fill_Half_Buffer(int half_idx);
+void RGB_Control_WS2812B_Reset(void);
+
+void RGB_Control_Set_Autonomous_Mode(int autonomous_on);
+uint8_t RGB_Control_get_Autonomous_Mode(void);
 
 #endif

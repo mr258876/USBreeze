@@ -1,4 +1,5 @@
 #include "bsp.h"
+#include "RGBControl.h"
 
 static void GPIO_Initialize(void);
 static void GPIO_EXTI_Initialize(void);
@@ -10,6 +11,7 @@ void BSP_Initialize(void)
 {
 	GPIO_Initialize();
 	GPIO_EXTI_Initialize();
+	TIM1_Initialize();
 	TIM2_Initialize();
 	TIM3_Initialize();
 }
@@ -24,12 +26,6 @@ static void GPIO_Initialize(void)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 
-	/* GPIO A8 LED */
-	/*GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);*/
-
 	/* GPIO D2 LED */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
@@ -39,12 +35,13 @@ static void GPIO_Initialize(void)
 	/*
 		GPIO A0-A3 for TIM2 CH1-4 PWM Out (Fan 3-0)
 		GPIO A6-A7 for TIM3 CH1-2 PWM Out (Fan 4-5)
+		GPIO A8 for TIM1 CH1 PWM Out (WS2812 ARGB)
 	 */
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_6 | GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
-	GPIO_ResetBits(GPIOA, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_6 | GPIO_Pin_7);
+	GPIO_ResetBits(GPIOA, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8);
 
 	/* GPIO B0-B1 for TIM3 CH1-2 PWM Out (Fan 6-7) */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
@@ -64,6 +61,65 @@ static void GPIO_Initialize(void)
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	GPIO_ResetBits(GPIOB, GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15);
+}
+
+static void TIM1_Initialize(void)
+{
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+	TIM_OCInitTypeDef TIM_OCInitStructure;
+	DMA_InitTypeDef DMA_InitStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
+
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+
+	TIM_InternalClockConfig(TIM1);
+
+	/* TIM1 Config */
+	TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
+	TIM_TimeBaseStructure.TIM_Period = RGB_WS2812_ARR - 1;
+	TIM_TimeBaseStructure.TIM_Prescaler = 0; // No Prescaler
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
+
+	/* TIM1 PWM Config */
+	TIM_OCStructInit(&TIM_OCInitStructure);
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_Pulse = 0;
+	TIM_OC1Init(TIM1, &TIM_OCInitStructure);
+
+	TIM_OC1PreloadConfig(TIM1, TIM_OCPreload_Disable);
+	TIM_ARRPreloadConfig(TIM1, ENABLE);
+	TIM_CtrlPWMOutputs(TIM1, ENABLE);
+
+	TIM_Cmd(TIM1, DISABLE);
+
+	/* DMA1 Config */
+	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&(TIM1->CCR1);			// DMA Destiniation
+	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)RGB_WS2812_Buffer;			// DMA Source
+	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;							// Direction: RAM SendBuff -> TIM1 ReceiveBuff
+	DMA_InitStructure.DMA_BufferSize = RGB_WS2812_BUFFER_SIZE;					// DMA_BufferSize=SendBuffSize
+	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;			// ReceiveBuff Addr Fixed
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;						// SendBuff Addr increasing
+	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord; // ReceiveBuff data size, 16bit
+	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;			// SENDBUFF_SIZE data size, 16bit
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;								// Circular!!!!
+	DMA_InitStructure.DMA_Priority = DMA_Priority_High;							// Priority High
+	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;								// Not memory to memory
+	DMA_Init(DMA1_Channel5, &DMA_InitStructure);								// Configure on DMA1 CH2. See STM32F10x Technical Reference Ch 10.3.7
+
+	DMA_ITConfig(DMA1_Channel5, DMA_IT_HT | DMA_IT_TC, ENABLE); // Interrupt on DMA half done / all done
+
+	NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel5_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0; // High as possible
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
+	DMA_Cmd(DMA1_Channel5, DISABLE); // Disable for now
 }
 
 static void TIM2_Initialize(void)

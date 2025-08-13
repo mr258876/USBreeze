@@ -240,9 +240,9 @@ bool USBD_HID1_SetReport(uint8_t rtype, uint8_t req, uint8_t rid, const uint8_t 
     case RGB_LAMP_ATTRIBUTES_REQUEST_REPORT_ID:
       return RGB_Control_Set_Attr_Request_Lamp_ID(buf, len);
     case RGB_LAMP_MULTI_UPDATE_REPORT_ID:
-      return true;
+      return RGB_Control_Set_Multi_Update(buf, len);
     case RGB_LAMP_RANGE_UPDATE_REPORT_ID:
-      return true;
+      return RGB_Control_Set_Range_Update(buf, len);
     case RGB_LAMP_ARRAY_CONTROL_REPORT_ID:
       return RGB_Control_Set_Control_Mode(buf, len);
 

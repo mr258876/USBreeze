@@ -33,6 +33,8 @@ bool Fan_Control_Set_Fan_Level_From_Host(const uint8_t *buf, int32_t len);
 int32_t RGB_Control_Get_Attr_Report(uint8_t *buf);
 int32_t RGB_Control_Get_Attributes_Response(uint8_t *buf);
 bool RGB_Control_Set_Attr_Request_Lamp_ID(const uint8_t *buf, int32_t len);
+bool RGB_Control_Set_Multi_Update(const uint8_t *buf, int32_t len);
+bool RGB_Control_Set_Range_Update(const uint8_t *buf, int32_t len);
 bool RGB_Control_Set_Control_Mode(const uint8_t *buf, int32_t len);
 
 #endif

@@ -39,14 +39,14 @@
 //   <i> Defines max. number of user threads that will run at the same time.
 //   <i> Default: 6
 #ifndef OS_TASKCNT
- #define OS_TASKCNT     5
+ #define OS_TASKCNT     6
 #endif
  
 //   <o>Default Thread stack size [bytes] <64-4096:8><#/4>
 //   <i> Defines default stack size for threads with osThreadDef stacksz = 0
 //   <i> Default: 200
 #ifndef OS_STKSIZE
- #define OS_STKSIZE     50      // this stack size value is in words
+ #define OS_STKSIZE     128      // this stack size value is in words
 #endif
  
 //   <o>Main Thread stack size [bytes] <64-32768:8><#/4>
@@ -67,7 +67,7 @@
 //   <i> Defines the combined stack size for threads with user-provided stack size.
 //   <i> Default: 0
 #ifndef OS_PRIVSTKSIZE
- #define OS_PRIVSTKSIZE 448       // this stack size value is in words
+ #define OS_PRIVSTKSIZE 384       // this stack size value is in words
 #endif
  
 //   <q>Stack overflow checking

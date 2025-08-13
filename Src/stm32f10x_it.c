@@ -23,6 +23,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
 
+#include "RGBControl.h"
+
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -157,7 +159,7 @@ void SysTick_Handler(void)
 }*/
 
 /**
-  * @brief  This function handles GPIO15-GP1O10 interrupt request.
+  * @brief  This function handles GPIO8-GP1O9 interrupt request.
   * @param  None
   * @retval None
   */
@@ -174,6 +176,11 @@ void EXTI9_5_IRQHandler(void)// PB8-PB9
     }
 }
 
+/**
+  * @brief  This function handles GPIO10-GP1O15 interrupt request.
+  * @param  None
+  * @retval None
+  */
 void EXTI15_10_IRQHandler(void)// PB10-PB15
 { 
 		if(EXTI_GetITStatus(EXTI_Line10)!=RESET){
@@ -201,6 +208,49 @@ void EXTI15_10_IRQHandler(void)// PB10-PB15
         Fan_Hall_Count[4]++;
     }
 }
+
+/**
+  * @brief  This function handles DMA1 CH5 interrupt request for WS2812 Control.
+  * @param  None
+  * @retval None
+  */
+void DMA1_Channel5_IRQHandler(void)
+{
+    if (DMA_GetITStatus(DMA1_IT_HT5)) {     // Former half buffer sent. Start reload
+        DMA_ClearITPendingBit(DMA1_IT_HT5);
+        RGB_Control_Fill_Half_Buffer(0);
+    }
+    if (DMA_GetITStatus(DMA1_IT_TC5)) {     // Latter half buffer sent. Start reload
+        DMA_ClearITPendingBit(DMA1_IT_TC5);
+        RGB_Control_Fill_Half_Buffer(1);
+    }
+}
+// void DMA1_Channel2_IRQHandler(void)
+// {
+//     uint32_t isr = DMA1->ISR;
+
+//     if (isr & (DMA_ISR_HTIF2 | DMA_ISR_TCIF2)) {
+//         // 先一次性清掉 HT/TC，避免重复进来
+//         DMA1->IFCR = DMA_IFCR_CHTIF2 | DMA_IFCR_CTCIF2;
+
+//         // 追赶循环：最多补两半区（防止我们落后 DMA 一半区以上）
+//         for (int k = 0; k < 2; ++k) {
+//             // CNDTR = 本轮剩余传输数（0..48）
+//             uint16_t ndtr = DMA1_Channel2->CNDTR;
+
+//             // 若 ndtr > 24，DMA 仍在用“前半区”（0..23），我们就去写“后半区”（1）
+//             // 否则 DMA 在用“后半区”（24..47），我们就去写“前半区”（0）
+//             int safe_half = (ndtr > RGB_WS2812_BITS_PER_LED) ? 1 : 0;
+//             RGB_Control_Fill_Half_Buffer(safe_half);
+
+//             // 如果真的什么都不用再填了，可提前退出
+//             // if (RGB_Lamps_Encoded >= RGB_Lamps_To_Update &&
+//             //     RGB_Encoded_Reset_Bits >= RGB_WS2812_RESET_CYCLES) {
+//             //     break;
+//             // }
+//         }
+//     }
+// }
 
 /**
   * @}

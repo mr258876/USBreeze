@@ -25,6 +25,9 @@ SYSTEM_FAN_RPM_TYPE Fan_Control_Get_RPM(uint8_t fan_id)
 
 void Fan_Control_Set_Level(uint8_t fan_id, uint8_t level)
 {
+	if (level > 100)
+		level = 100;
+
 	if (fan_id < 4)
 		Fan_Control_Set_Level_TIM2(fan_id, level * 10);
 	else if (fan_id < 8)
@@ -97,7 +100,7 @@ void Fan_Control_thread(const void *dummy)
 	{
 		Fan_Control_Update_PRM();
 
-		// Fan_Control_Notify_Host_RPM();
+		Fan_Control_Notify_Host_RPM();
 
 		osDelay(500);
 	}
