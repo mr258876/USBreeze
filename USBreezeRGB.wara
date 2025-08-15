@@ -127,7 +127,7 @@ usage = ['Lighting And Illumination', 'LampArray']
 
             [[applicationCollection.featureReport.logicalCollection.variableItem]]
             usage = ['Lighting And Illumination', 'LampCount']
-            logicalValueRange = [0, 4]
+            logicalValueRange = [0, 10]
 
             [[applicationCollection.featureReport.logicalCollection.variableItem]]
             usage = ['Lighting And Illumination', 'LampUpdateFlags']
@@ -137,7 +137,7 @@ usage = ['Lighting And Illumination', 'LampArray']
             usage = ['Lighting And Illumination', 'LampId']
             sizeInBits = 16
             logicalValueRange = 'maxUnsignedSizeRange'
-            count = 4
+            count = 10
 
             #
             # Lamp 0
@@ -231,6 +231,143 @@ usage = ['Lighting And Illumination', 'LampArray']
             sizeInBits = 8
             logicalValueRange = 'maxUnsignedSizeRange'
 
+            #
+            # Lamp 4
+            #
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'RedUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'GreenUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'BlueUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'IntensityUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            #
+            # Lamp 5
+            #
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'RedUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'GreenUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'BlueUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'IntensityUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            #
+            # Lamp 6
+            #
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'RedUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'GreenUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'BlueUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'IntensityUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            #
+            # Lamp 7
+            #
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'RedUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'GreenUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'BlueUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'IntensityUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            #
+            # Lamp 8
+            #
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'RedUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'GreenUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'BlueUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'IntensityUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            #
+            # Lamp 9
+            #
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'RedUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'GreenUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'BlueUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+            usage = ['Lighting And Illumination', 'IntensityUpdateChannel']
+            sizeInBits = 8
+            logicalValueRange = 'maxUnsignedSizeRange'
 
     [[applicationCollection.featureReport]]
 
