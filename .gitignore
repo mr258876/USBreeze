@@ -57,5 +57,9 @@ RTE/
 !RTE/Config/**
 !RTE/Device/**
 !RTE/Board/**
+!RTE/CMSIS/*.c
+!RTE/CMSIS/*.h
+!RTE/USB/*.c
+!RTE/USB/*.h
 !RTE/RTX_Config.c
 !RTE/_Target_*/RTE_Components.h
