@@ -1,5 +1,6 @@
 #include "RGBControl.h"
 
+#if RGB_CUSTOM_LAMP_POSITIONS
 const LampPosition RGB_Lamp_Positions[] =
     {
         {0, 0, 0},  // X, Y, Z position in MILLImeters.
@@ -19,3 +20,4 @@ const LampPosition RGB_Lamp_Positions[] =
         {14, 0, 0}, // X, Y, Z position in MILLImeters.
         {15, 0, 0}, // X, Y, Z position in MILLImeters.
 };
+#endif

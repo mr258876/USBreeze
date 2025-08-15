@@ -4,13 +4,17 @@
 #include <stdint.h>
 #include "cmsis_os.h"
 
-#define RGB_LAMP_COUNT              16
+#define RGB_LAMP_COUNT              128
 #define RGB_LAMPARRAY_KIND          7       // 07 -> LampArrayKindChassis. Referer: Page 330, https://www.usb.org/sites/default/files/hut1_4.pdf
-#define RGB_MIN_UPDATE_INTERVAL     50000   // In Microseconds
+#define RGB_MIN_UPDATE_INTERVAL     RGB_LAMP_COUNT * 36    // In Microseconds, assume 1.5us for 1bit in WS281X
 
-#define RGB_BOUNDING_BOX_WIDTH_X    16000  // In Micrometers
+#define RGB_CUSTOM_LAMP_POSITIONS   0       // See RGBLampPositions.c
+
+#if RGB_CUSTOM_LAMP_POSITIONS
+#define RGB_BOUNDING_BOX_WIDTH_X    10000   // In Micrometers
 #define RGB_BOUNDING_BOX_DEPTH_Y    10000   // In Micrometers
 #define RGB_BOUNDING_BOX_HEIGHT_Z   10000   // In Micrometers
+#endif
 
 #define RGB_CHANNELS_PER_LAMP       3
 
@@ -34,7 +38,9 @@ typedef __packed struct
     uint16_t PositionZInMillimeters;
 } LampPosition;
 
+#if RGB_CUSTOM_LAMP_POSITIONS == true
 extern const LampPosition RGB_Lamp_Positions[]; // ID count MUST match the size of RGB_LAMP_COUNT
+#endif
 
 extern osMessageQId RGB_Update_Msg_Queue;
 

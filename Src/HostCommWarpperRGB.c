@@ -99,19 +99,19 @@ typedef __packed struct
 
 static uint16_t RGB_Attributes_Request_Report_Lamp_ID = 0;
 static const LampAttributes RGB_Lamp_Attributes_Template = {
-    0x00,              // Lamp ID 0
-    1,                 // PositionXInMicrometers
-    1,                 // PositionYInMicrometers
-    1,                 // PositionZInMicrometers
-    4,                 // UpdateLatencyInMicroseconds
-    LampPurposeAccent, // Lamp purpose: bit5 -> LampPurposePresentation, bit4 -> LampPurposeIllumination, bit3 -> LampPurposeStatus (Unread msg etc.),
-                       //     bit2 - > LampPurposeBranding (Logo etc.), bit1 -> LampPurposeAccent (CaseFan, etc.), bit0 -> LampPurposeControl (Keys on board, etc.)
-    0xFF,              // RedLevelCount
-    0xFF,              // GreenLevelCount
-    0xFF,              // BlueLevelCount
-    1,                 // IntensityLevelCount, just set to 1 if at least 2 channels are adjustable
-    1,                 // IsProgrammable <- No command will be sent if set to 0. LMAO XD
-    0,                 // InputBinding
+    0x00,                // Lamp ID 0
+    1,                   // PositionXInMicrometers
+    1,                   // PositionYInMicrometers
+    1,                   // PositionZInMicrometers
+    RGB_LAMP_COUNT * 36, // UpdateLatencyInMicroseconds <- assume 1.5us for 1bit in WS281X
+    LampPurposeAccent,   // Lamp purpose: bit5 -> LampPurposePresentation, bit4 -> LampPurposeIllumination, bit3 -> LampPurposeStatus (Unread msg etc.),
+                         //     bit2 - > LampPurposeBranding (Logo etc.), bit1 -> LampPurposeAccent (CaseFan, etc.), bit0 -> LampPurposeControl (Keys on board, etc.)
+    0xFF,                // RedLevelCount
+    0xFF,                // GreenLevelCount
+    0xFF,                // BlueLevelCount
+    1,                   // IntensityLevelCount, just set to 1 if at least 2 channels are adjustable
+    1,                   // IsProgrammable <- No command will be sent if set to 0. LMAO XD
+    0,                   // InputBinding
 };
 
 int32_t RGB_Control_Get_Attr_Report(uint8_t *buf)
@@ -119,9 +119,15 @@ int32_t RGB_Control_Get_Attr_Report(uint8_t *buf)
     LampArrayAttributesReport *data = (LampArrayAttributesReport *)buf;
 
     data->LampCount = RGB_LAMP_COUNT;
-    data->BoundingBoxWidthInMicrometers = RGB_BOUNDING_BOX_WIDTH_X * 1000;
-    data->BoundingBoxHeightInMicrometers = RGB_BOUNDING_BOX_HEIGHT_Z * 1000;
-    data->BoundingBoxDepthInMicrometers = RGB_BOUNDING_BOX_DEPTH_Y * 1000;
+#if RGB_CUSTOM_LAMP_POSITIONS
+    data->BoundingBoxWidthInMicrometers = RGB_BOUNDING_BOX_WIDTH_X;
+    data->BoundingBoxHeightInMicrometers = RGB_BOUNDING_BOX_HEIGHT_Z;
+    data->BoundingBoxDepthInMicrometers = RGB_BOUNDING_BOX_DEPTH_Y;
+#else
+    data->BoundingBoxWidthInMicrometers = RGB_LAMP_COUNT * 1000;
+    data->BoundingBoxHeightInMicrometers = 1000;
+    data->BoundingBoxDepthInMicrometers = 1000;
+#endif
     data->LampArrayKind = LampArrayKindChassis;
     // data->LampArrayKind = LampArrayKindPeripheral;
     data->MinUpdateIntervalInMicroseconds = RGB_MIN_UPDATE_INTERVAL;
@@ -146,12 +152,15 @@ int32_t RGB_Control_Get_Attributes_Response(uint8_t *buf)
 
     LampAttributes *_buf = (LampAttributes *)buf;
     _buf->LampId = RGB_Attributes_Request_Report_Lamp_ID;
-    // _buf->PositionXInMicrometers = RGB_Lamp_Positions[RGB_Attributes_Request_Report_Lamp_ID].PositionXInMillimeters;
-    // _buf->PositionYInMicrometers = RGB_Lamp_Positions[RGB_Attributes_Request_Report_Lamp_ID].PositionYInMillimeters;
-    // _buf->PositionZInMicrometers = RGB_Lamp_Positions[RGB_Attributes_Request_Report_Lamp_ID].PositionZInMillimeters;
-    _buf->PositionXInMicrometers = RGB_Attributes_Request_Report_Lamp_ID;
-    _buf->PositionYInMicrometers = RGB_Attributes_Request_Report_Lamp_ID;
-    _buf->PositionZInMicrometers = RGB_Attributes_Request_Report_Lamp_ID;
+#if RGB_CUSTOM_LAMP_POSITIONS
+    _buf->PositionXInMicrometers = RGB_Lamp_Positions[RGB_Attributes_Request_Report_Lamp_ID][0] * 1000;
+    _buf->PositionYInMicrometers = RGB_Lamp_Positions[RGB_Attributes_Request_Report_Lamp_ID][1] * 1000;
+    _buf->PositionZInMicrometers = RGB_Lamp_Positions[RGB_Attributes_Request_Report_Lamp_ID][2] * 1000;
+#else
+    _buf->PositionXInMicrometers = RGB_Attributes_Request_Report_Lamp_ID * 1000;
+    _buf->PositionYInMicrometers = 1000;
+    _buf->PositionZInMicrometers = 1000;
+#endif
 
     RGB_Attributes_Request_Report_Lamp_ID++;
     if (RGB_Attributes_Request_Report_Lamp_ID >= RGB_LAMP_COUNT)
@@ -189,7 +198,7 @@ bool RGB_Control_Set_Multi_Update(const uint8_t *buf, int32_t len)
 
     for (int i = 0; i < _buf->LampCount; i++)
     {
-        if (_buf->LampIds[i] > RGB_LAMP_COUNT)
+        if (_buf->LampIds[i] >= RGB_LAMP_COUNT)
             return false;
 
         RGB_Lamp_Colors[_buf->LampIds[i] * 3] = _buf->UpdateColors[i].RedChannel;
@@ -199,7 +208,7 @@ bool RGB_Control_Set_Multi_Update(const uint8_t *buf, int32_t len)
 
     if (_buf->LampUpdateFlags & 1)
     {
-        osMessagePut(RGB_Update_Msg_Queue, 1, osWaitForever);
+        osMessagePut(RGB_Update_Msg_Queue, 1, 0);
     }
 
     return true;
@@ -226,7 +235,7 @@ bool RGB_Control_Set_Range_Update(const uint8_t *buf, int32_t len)
 
     if (_buf->LampUpdateFlags & 1)
     {
-        osMessagePut(RGB_Update_Msg_Queue, 1, osWaitForever);
+        osMessagePut(RGB_Update_Msg_Queue, 1, 0);
     }
 
     return true;

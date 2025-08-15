@@ -26,9 +26,10 @@ bool Fan_Control_Set_Fan_Level_From_Host(const uint8_t *buf, int32_t len);
 #define RGB_LAMP_ATTRIBUTES_REQUEST_REPORT_ID 2
 #define RGB_LAMP_ATTRIBUTES_RESPONSE_REPORT_ID 3
 #define RGB_LAMP_MULTI_UPDATE_REPORT_ID 4
-#define RGB_LAMP_MULTI_UPDATE_LAMP_COUNT 4
 #define RGB_LAMP_RANGE_UPDATE_REPORT_ID 5
 #define RGB_LAMP_ARRAY_CONTROL_REPORT_ID 6
+
+#define RGB_LAMP_MULTI_UPDATE_LAMP_COUNT 10
 
 int32_t RGB_Control_Get_Attr_Report(uint8_t *buf);
 int32_t RGB_Control_Get_Attributes_Response(uint8_t *buf);

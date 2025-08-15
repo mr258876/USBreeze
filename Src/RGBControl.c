@@ -94,6 +94,7 @@ static void RGB_Control_Show_RGB_Blocking_From_Array(const volatile uint8_t *rgb
 {
     while (RGB_Update_Busy)
     { /* Wait until last update finish */
+        osDelay(1);
     }
 
     RGB_Update_Busy = 1;
@@ -114,10 +115,10 @@ static void RGB_Control_Show_RGB_Blocking_From_Array(const volatile uint8_t *rgb
     DMA_SetCurrDataCounter(DMA1_Channel5, RGB_WS2812_BITS_PER_LED * sizeof(uint16_t));
     TIM_SetCompare1(TIM1, RGB_WS2812_Buffer[0]);
     TIM_SetCounter(TIM1, 0);
-    TIM_GenerateEvent(TIM1, TIM_EventSource_Update);    
+    TIM_GenerateEvent(TIM1, TIM_EventSource_Update);
 
     DMA_Cmd(DMA1_Channel5, ENABLE);
-    TIM_DMACmd(TIM1, TIM_DMA_Update, ENABLE);       // MUST use update & DMA1 CH5 or serious timing issues occurs
+    TIM_DMACmd(TIM1, TIM_DMA_Update, ENABLE); // MUST use update & DMA1 CH5 or serious timing issues occurs
     TIM_Cmd(TIM1, ENABLE);
 
     // wait until all LEDs sent (or scheduled to send) and reached reset slot
