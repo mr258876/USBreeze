@@ -51,3 +51,20 @@ Control lighting from **Settings -> Personalization -> Dynamic lighting** (effec
 ## License
 
 See [LICENSE](LICENSE)
+
+This repository contains hardware design files and firmware source code released
+under different licenses. Unless a file states otherwise via an
+SPDX-License-Identifier, the following defaults apply:
+
+1) Hardware/  (schematics, PCB layout, BOM, fabrication/mechanical sources)
+   - License: [CERN Open Hardware Licence v2 – Weakly Reciprocal](LICENSES/CERN-OHL-W-2.0.txt)
+   - SPDX: CERN-OHL-W-2.0
+   - Notes: Keep copyright and license notices. When you distribute products or
+          outputs based on modified hardware, provide the "source" as defined
+          by the licence and include the Source Location.
+
+2) Firmware/  (software/firmware source code)
+   - License: [MIT License](LICENSES/MIT.txt)
+   - SPDX: MIT
+
+Copyright © 2025 mr258876
