@@ -1,0 +1,25 @@
+项目名称：USBreeze
+源码位置：https://github.com/mr258876/USBreeze
+
+本仓库包含硬件设计文件与固件源码，适用不同的开源许可证。除非单个文件另有
+SPDX-License-Identifier 标注，默认遵循以下映射关系：
+
+1) Hardware/ 目录（原理图、PCB、BOM、制造文件等）
+   许可证：CERN Open Hardware Licence v2 - Weakly Reciprocal
+   SPDX：CERN-OHL-W-2.0+
+   全文：见 LICENSES/CERN-OHL-W-2.0.txt
+   备注：硬件按“弱互惠”条款开源；请保留版权与许可告示，并按许可证条款
+         共享修改过的“源文件”。
+
+2) Firmware/ 目录（固件/软件源码）
+   许可证：MIT License
+   SPDX：MIT
+
+
+许可证全文参见：
+- LICENSES/CERN-OHL-W-2.0.txt
+- LICENSES/MIT.txt
+
+Copyright © 2025 mr258876
+
+此许可证为索引。有关约束性条款，请参阅上方全文。

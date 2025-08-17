@@ -1,0 +1,50 @@
+# ===== Keil MDK-ARM / uVision =====
+# keil customizations
+#*.uvoptx
+*.uvguix*
+*.rtebuild
+*.build_log*
+*.bak
+*.htm
+*.scvd
+
+# J-Link temporary files
+JLinkLog.txt
+JLinkSettings.ini
+
+# Debug config
+DebugConfig/
+*.crunlog
+
+# Binary outputs
+Objects/
+Listings/
+Output/
+Build/
+out/
+bin/
+
+# Binaries
+*.axf
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+*.o
+*.obj
+*.d
+*.crf
+*.sbr
+*.tdf
+*.dep
+*.iex
+*.uvguix.*
+*.pbi
+*.pbd
+*.sct.tmp
+*.scvd
+*.log
+
+# ---- RTE Configs ----
+RTE/

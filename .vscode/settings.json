@@ -2,6 +2,7 @@
     "files.associations": {
         "fancontrol.h": "c",
         "hostcommwarpper.h": "c",
-        "rgbcontrol.h": "c"
+        "rgbcontrol.h": "c",
+        "bsp.h": "c"
     }
 }
