@@ -47,7 +47,15 @@ Keil::MDK-Middleware    7.13.0
 Keil::STM32F1xx_DFP     2.4.1
 ```
 
-Please also configure your ARM compiler version to `Version 5` in `Target` tab of target options, and enable `C99 Mode` in `C/C++` tab.
+Memory Regions
+```
+Segments    Start       Size
+ROM         0x8000000   0x7800
+RAM         0x20000000  0x2800
+```
+- The last 2K bytes is reserved for config storage.
+
+Please also configure your Xtal freq to `8.0` Mhz, ARM compiler version to `Version 5` in `Target` tab of target options,  and enable `C99 Mode` in `C/C++` tab.
 
 ### Configureations
 
