@@ -21,7 +21,7 @@
 #define RGB_BOUNDING_BOX_HEIGHT_Z   10000   // In Micrometers
 #endif
 
-#define RGB_CONTROL_CHANNEL_COUNT        3
+#define RGB_CONTROL_CHANNELS_COUNT          3
 #define RGB_CONTROL_CHANNEL_A_LAMP_COUNT    128
 #define RGB_CONTROL_CHANNEL_B_LAMP_COUNT    64
 #define RGB_CONTROL_CHANNEL_C_LAMP_COUNT    64
@@ -32,7 +32,7 @@
 #define RGB_WS2812_PIN              GPIO_Pin_8
 
 #define RGB_WS2812_BITS_PER_LED     24
-#define RGB_WS2812_BUFFER_SIZE      RGB_WS2812_BITS_PER_LED * 2
+#define RGB_WS2812_BUFFER_SIZE      RGB_WS2812_BITS_PER_LED * RGB_CONTROL_CHANNELS_COUNT * 2 // <- Ping-pong buffer, contains data of 2 lamps
 #define RGB_WS2812_ARR              90      // Autoreload value of TIM1
 #define RGB_WS2812_T0H              30		// 1/3 high for a 0bit
 #define RGB_WS2812_T1H              60		// 2/3 high for a 1bit

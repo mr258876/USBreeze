@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2025 mr258876
  * SPDX-License-Identifier: MIT
  */
@@ -30,60 +30,77 @@ static const uint16_t RGB_WS2812_NIBBLE_LUT[16][4] = {
     /*0xF*/ {RGB_WS2812_T1H, RGB_WS2812_T1H, RGB_WS2812_T1H, RGB_WS2812_T1H},
 };
 
+static const uint16_t RGB_Lamp_Count_By_Channels[] = {RGB_CONTROL_CHANNEL_A_LAMP_COUNT, RGB_CONTROL_CHANNEL_B_LAMP_COUNT, RGB_CONTROL_CHANNEL_C_LAMP_COUNT};
+
 osMessageQDef(RGB_Update_Msg_Queue, 4, uint8_t); // Define message queue
 osMessageQId RGB_Update_Msg_Queue;
 
 /* Data send status */
-static const volatile uint8_t *RGB_Color_Source = NULL;
-static int RGB_Lamps_To_Update = 0;
-static int RGB_Lamps_Encoded = 0;      // LEDs in send buffer
-static int RGB_Encoded_Reset_Bits = 0; // Encoded reset bit count
-static int RGB_Update_Busy = 0;
+static int RGB_Lamps_To_Update[RGB_CONTROL_CHANNELS_COUNT];
+static int RGB_Lamps_Encoded[RGB_CONTROL_CHANNELS_COUNT];      // LEDs in send buffer
+static int RGB_Encoded_Reset_Bits[RGB_CONTROL_CHANNELS_COUNT]; // Encoded reset bit count
+static int RGB_Update_Busy = 0;                               // <- only need 1 because all channels updates at the same time
 
 static int RGB_Autonomous_Mode = 1;
 
-static void RGB_Control_Encode_RGB(uint8_t r, uint8_t g, uint8_t b, volatile uint16_t *dst);
-static void RGB_Control_Show_RGB_Blocking_From_Array(const volatile uint8_t *rgb_bytes, int n);
+static void RGB_Control_Encode_RGB(uint8_t r, uint8_t g, uint8_t b, volatile uint16_t *dst, uint8_t channel_id, uint8_t channel_cnt);
+static void RGB_Control_Show_RGB_Blocking_From_Array(void);
 
-static inline void RGB_Control_Encode_LUT(uint8_t v, volatile uint16_t *dst)
+static inline void RGB_Control_Encode_LUT(uint8_t v, volatile uint16_t *dst, uint8_t channel_id, uint8_t channel_cnt)
 {
     const uint16_t *hi = RGB_WS2812_NIBBLE_LUT[v >> 4];
     const uint16_t *lo = RGB_WS2812_NIBBLE_LUT[v & 0x0F];
 
-    // 用直接赋值避免 volatile + memcpy 的告警/优化问题
-    dst[0] = hi[0];
-    dst[1] = hi[1];
-    dst[2] = hi[2];
-    dst[3] = hi[3];
-    dst[4] = lo[0];
-    dst[5] = lo[1];
-    dst[6] = lo[2];
-    dst[7] = lo[3];
+    // avoid volatile + memcpy warnings
+    dst[0 * channel_cnt + channel_id] = hi[0];
+    dst[1 * channel_cnt + channel_id] = hi[1];
+    dst[2 * channel_cnt + channel_id] = hi[2];
+    dst[3 * channel_cnt + channel_id] = hi[3];
+    dst[4 * channel_cnt + channel_id] = lo[0];
+    dst[5 * channel_cnt + channel_id] = lo[1];
+    dst[6 * channel_cnt + channel_id] = lo[2];
+    dst[7 * channel_cnt + channel_id] = lo[3];
 }
 
-static void RGB_Control_Encode_RGB(uint8_t r, uint8_t g, uint8_t b, volatile uint16_t *dst24)
+static void RGB_Control_Encode_RGB(uint8_t r, uint8_t g, uint8_t b, volatile uint16_t *dst24, uint8_t channel_id, uint8_t channel_cnt)
 {
-    RGB_Control_Encode_LUT(g, &dst24[0]);  // G
-    RGB_Control_Encode_LUT(r, &dst24[8]);  // R
-    RGB_Control_Encode_LUT(b, &dst24[16]); // B
+    RGB_Control_Encode_LUT(g, &dst24[0 * channel_cnt + channel_id], channel_id, channel_cnt);  // G
+    RGB_Control_Encode_LUT(r, &dst24[8 * channel_cnt + channel_id], channel_id, channel_cnt);  // R
+    RGB_Control_Encode_LUT(b, &dst24[16 * channel_cnt + channel_id], channel_id, channel_cnt); // B
+}
+
+static inline uint16_t RGB_Channel_Get_Lamp_Paddings(uint8_t channel)
+{
+    if (channel >= RGB_CONTROL_CHANNELS_COUNT)
+        return 0;
+
+    uint16_t result = 0;
+    for (int i = 0; i < channel; i++)
+    {
+        result += RGB_Lamp_Count_By_Channels[i]; // <- Temporary solution.
+    }
+    return result;
 }
 
 void RGB_Control_Fill_Half_Buffer(int half_idx)
 {
-    volatile uint16_t *dst = &RGB_WS2812_Buffer[half_idx * RGB_WS2812_BITS_PER_LED];
+    volatile uint16_t *dst = &RGB_WS2812_Buffer[half_idx * RGB_WS2812_BITS_PER_LED * RGB_CONTROL_CHANNELS_COUNT];
 
-    if (RGB_Lamps_Encoded < RGB_Lamps_To_Update)
+    for (int i = 0; i < RGB_CONTROL_CHANNELS_COUNT; i++)
     {
-        const volatile uint8_t *p = &RGB_Color_Source[RGB_Lamps_Encoded * 3]; // RGBRGB...
-        RGB_Control_Encode_RGB(p[0], p[1], p[2], dst);                        // p[0]=R, p[1]=G, p[2]=B
-        RGB_Lamps_Encoded++;
-    }
-    else
-    {
-        // A full-zero bit, for reset
-        for (int i = 0; i < RGB_WS2812_BITS_PER_LED; i++)
-            dst[i] = 0;
-        RGB_Encoded_Reset_Bits += RGB_WS2812_BITS_PER_LED;
+        if (RGB_Lamps_Encoded[i] < RGB_Lamps_To_Update[i])
+        {
+            const volatile uint8_t *p = &RGB_Lamp_Colors[RGB_Channel_Get_Lamp_Paddings(i) + RGB_Lamps_Encoded[i] * 3]; // RGBRGB...
+            RGB_Control_Encode_RGB(p[0], p[1], p[2], dst, i, RGB_CONTROL_CHANNELS_COUNT);                                                             // p[0]=R, p[1]=G, p[2]=B
+            RGB_Lamps_Encoded[i]++;
+        }
+        else
+        {
+            // A full-zero bit, for reset
+            for (int i = 0; i < RGB_WS2812_BITS_PER_LED; i++)
+                dst[i] = 0;
+            RGB_Encoded_Reset_Bits[i] += RGB_WS2812_BITS_PER_LED;
+        }
     }
 }
 
@@ -94,7 +111,7 @@ void RGB_Control_WS2812B_Reset(void)
     osDelay(1);
 }
 
-static void RGB_Control_Show_RGB_Blocking_From_Array(const volatile uint8_t *rgb_bytes, int n)
+static void RGB_Control_Show_RGB_Blocking_From_Array(void)
 {
     while (RGB_Update_Busy)
     { /* Wait until last update finish */
@@ -102,10 +119,12 @@ static void RGB_Control_Show_RGB_Blocking_From_Array(const volatile uint8_t *rgb
     }
 
     RGB_Update_Busy = 1;
-    RGB_Color_Source = rgb_bytes;
-    RGB_Lamps_To_Update = n;
-    RGB_Lamps_Encoded = 0;
-    RGB_Encoded_Reset_Bits = 0;
+    for (size_t i = 0; i < RGB_CONTROL_CHANNELS_COUNT; i++)
+    {
+        RGB_Lamps_To_Update[i] = RGB_Lamp_Count_By_Channels[i];
+        RGB_Lamps_Encoded[i] = 0;
+        RGB_Encoded_Reset_Bits[i] = 0;
+    }
 
     for (size_t i = 0; i < RGB_WS2812_BUFFER_SIZE; i++)
     {
@@ -126,8 +145,17 @@ static void RGB_Control_Show_RGB_Blocking_From_Array(const volatile uint8_t *rgb
     TIM_Cmd(TIM1, ENABLE);
 
     // wait until all LEDs sent (or scheduled to send) and reached reset slot
-    while (RGB_Lamps_Encoded < RGB_Lamps_To_Update || RGB_Encoded_Reset_Bits < RGB_WS2812_RESET_CYCLES)
+    while (1)
     {
+        uint8_t data_remains = 0;
+        for (size_t i = 0; i < RGB_CONTROL_CHANNELS_COUNT; i++)
+        {
+            data_remains |= RGB_Lamps_Encoded[i] < RGB_Lamps_To_Update[i] || RGB_Encoded_Reset_Bits[i] < RGB_WS2812_RESET_CYCLES;
+        }
+        if (!data_remains)
+        {
+            break;
+        }
         osThreadYield();
     }
 
@@ -161,7 +189,7 @@ void RGB_Control_thread(const void *dummy)
         evt = osMessageGet(RGB_Update_Msg_Queue, osWaitForever);
         if (evt.status == osEventMessage)
         {
-            RGB_Control_Show_RGB_Blocking_From_Array(RGB_Lamp_Colors, RGB_LAMP_TOTAL_COUNT);
+            RGB_Control_Show_RGB_Blocking_From_Array();
         }
     }
 }

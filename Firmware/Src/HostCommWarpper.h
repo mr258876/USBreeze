@@ -38,6 +38,11 @@ bool Fan_Control_Set_Fan_Level_From_Host(const uint8_t *buf, int32_t len);
 
 #define RGB_LAMP_MULTI_UPDATE_LAMP_COUNT        10
 
+#define RGB_LAMP_INSTANCES_COUNT                3
+#define RGB_LAMP_INSTANCE_0_LAMP_COUNT          128
+#define RGB_LAMP_INSTANCE_1_LAMP_COUNT          64
+#define RGB_LAMP_INSTANCE_2_LAMP_COUNT          64
+
 int32_t RGB_Control_Get_Attr_Report(uint8_t instance, uint8_t *buf);
 int32_t RGB_Control_Get_Attributes_Response(uint8_t instance, uint8_t *buf);
 bool RGB_Control_Set_Attr_Request_Lamp_ID(uint8_t instance, const uint8_t *buf, int32_t len);
