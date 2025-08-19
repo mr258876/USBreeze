@@ -24,6 +24,7 @@ void Fan_Control_Notify_Host_RPM(void);
 
 int32_t Fan_Control_Copy_RPM_To_Buffer(uint8_t *buf);
 int32_t Fan_Control_Copy_Fan_Level_To_Buffer(uint8_t *buf);
+int32_t Fan_Control_Copy_Internal_Temp_To_Buffer(uint8_t *buf);
 // bool Fan_Control_Set_RPM_From_Host(const uint8_t *buf, int32_t len);
 bool Fan_Control_Set_Fan_Level_From_Host(const uint8_t *buf, int32_t len);
 

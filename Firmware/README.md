@@ -125,9 +125,9 @@ Please configure these values in following files:
 // HID Interface String
 #define USBD_HID0_STR_DESC                        L"USBreeze_HID_Fan"
 // Number of Input Reports
-#define USBD_HID0_IN_REPORT_NUM                   2
+#define USBD_HID0_IN_REPORT_NUM                   3
 // Number of Output Reports
-#define USBD_HID0_OUT_REPORT_NUM                  2
+#define USBD_HID0_OUT_REPORT_NUM                  3
 // Maximum Input Report Size (in bytes)
 #define USBD_HID0_IN_REPORT_MAX_SZ                33
 // Maximum Output Report Size (in bytes)
@@ -137,7 +137,7 @@ Please configure these values in following files:
 // Use User Provided HID Report Descriptor
 #define USBD_HID0_USER_REPORT_DESCRIPTOR          1
 // User Provided HID Report Descriptor Size (in bytes)
-#define USBD_HID0_USER_REPORT_DESCRIPTOR_SIZE     54
+#define USBD_HID0_USER_REPORT_DESCRIPTOR_SIZE     75
 ```
 
 - USB -> USBD_Config_HID_1.h

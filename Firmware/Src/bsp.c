@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2025 mr258876
  * SPDX-License-Identifier: MIT
  */
@@ -11,6 +11,8 @@ static void GPIO_EXTI_Initialize(void);
 static void TIM1_Initialize(void);
 static void TIM2_Initialize(void);
 static void TIM3_Initialize(void);
+static void ADC_Initialize(void);
+static void IWDG_Initialize(void);
 
 void BSP_Initialize(void)
 {
@@ -19,6 +21,8 @@ void BSP_Initialize(void)
 	TIM1_Initialize();
 	TIM2_Initialize();
 	TIM3_Initialize();
+	ADC_Initialize();
+	IWDG_Initialize();
 }
 
 static void GPIO_Initialize(void)
@@ -250,4 +254,42 @@ static void GPIO_EXTI_Initialize(void)
 
 	NVIC_InitStructure.NVIC_IRQChannel = EXTI15_10_IRQn;
 	NVIC_Init(&NVIC_InitStructure);
+}
+
+static void ADC_Initialize(void)
+{
+	ADC_InitTypeDef ADC_InitStructure;
+
+	/* Enable ADC1 Periph */
+	RCC_ADCCLKConfig(RCC_PCLK2_Div6); // Set ADC clock to 12MHz
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+
+	ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+	ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+	ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
+	ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
+	ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+	ADC_InitStructure.ADC_NbrOfChannel = 1;
+	ADC_Init(ADC1, &ADC_InitStructure);
+
+	ADC_TempSensorVrefintCmd(ENABLE); // Enable Internal Temp Sensor
+
+	osDelay(1); // wait for temp sensor starts
+
+	ADC_Cmd(ADC1, ENABLE);		// Enable ADC1
+	ADC_ResetCalibration(ADC1); // Reset calibration
+	while (ADC_GetResetCalibrationStatus(ADC1))
+		;						// Wait for calibration reset
+	ADC_StartCalibration(ADC1); // Start calibration
+	while (ADC_GetCalibrationStatus(ADC1))
+		; // Wait for calibratoin
+}
+
+static void IWDG_Initialize(void)
+{
+	IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
+	IWDG_SetPrescaler(IWDG_Prescaler_8);
+	IWDG_SetReload(250); // Timeout = 8/40*250=50ms
+	IWDG_ReloadCounter();
+	IWDG_Enable();
 }

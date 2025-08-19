@@ -10,6 +10,8 @@
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_tim.h"
 #include "stm32f10x_exti.h"
+#include "stm32f10x_adc.h"
+#include "stm32f10x_iwdg.h"
 
 void BSP_Initialize(void);
 

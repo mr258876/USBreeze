@@ -11,6 +11,8 @@
 #include "FanControl.h"
 #include "RGBControl.h"
 
+#include "stm32f10x_iwdg.h"
+
 //osThreadDef(Fan_Control_thread, osPriorityNormal, 1, 0);
 osThreadDef(RGB_Control_thread, osPriorityNormal, 1, 0);
 
@@ -56,6 +58,17 @@ int main(void)
 	// example: tid_name = osThreadCreate (osThread(name), NULL);
 
 	osKernelStart(); // start thread execution
-
-	Fan_Control_thread(NULL);
+	
+	uint32_t last_fan_update_tick = osKernelSysTick();
+	while (1)
+	{
+		IWDG_ReloadCounter();
+		if (osKernelSysTick() - last_fan_update_tick >= 500)
+		{
+		  Fan_Control_Loop();
+			last_fan_update_tick = osKernelSysTick();
+		}
+		osDelay(25);
+	}
 }
+

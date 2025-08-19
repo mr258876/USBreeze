@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2025 mr258876
  * SPDX-License-Identifier: MIT
  */
@@ -9,10 +9,12 @@
 
 #include "rl_usb.h"
 
-
 void Fan_Control_Notify_Host_RPM(void)
 {
-    USBD_HID_GetReportTrigger(FAN_HID_INSTANCE, FAN_CONTROL_RPM_INPUT_REPORT_ID, (uint8_t *)Fan_RPM_Count, sizeof(SYSTEM_FAN_RPM_TYPE) * SYSTEM_FAN_COUNT);
+    if (USBD_Configured(0))
+    {
+        USBD_HID_GetReportTrigger(FAN_HID_INSTANCE, FAN_CONTROL_RPM_INPUT_REPORT_ID, (uint8_t *)Fan_RPM_Count, sizeof(SYSTEM_FAN_RPM_TYPE) * SYSTEM_FAN_COUNT);
+    }
 }
 
 int32_t Fan_Control_Copy_RPM_To_Buffer(uint8_t *buf)
@@ -51,6 +53,13 @@ int32_t Fan_Control_Copy_Fan_Level_To_Buffer(uint8_t *buf)
 //     }
 //     return true;
 // }
+
+int32_t Fan_Control_Copy_Internal_Temp_To_Buffer(uint8_t *buf)
+{
+    buf[0] = Fan_Control_Internal_Temperature & 0xFF;
+    buf[1] = Fan_Control_Internal_Temperature >> 8;
+    return sizeof(int16_t);
+}
 
 bool Fan_Control_Set_Fan_Level_From_Host(const uint8_t *buf, int32_t len)
 {

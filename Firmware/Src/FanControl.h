@@ -17,8 +17,9 @@
 extern SYSTEM_FAN_HALL_TYPE Fan_Hall_Count[SYSTEM_FAN_COUNT];
 extern SYSTEM_FAN_RPM_TYPE Fan_RPM_Count[SYSTEM_FAN_COUNT];
 extern SYSTEM_FAN_LEVEL_TYPE Fan_Control_Levels[SYSTEM_FAN_COUNT];
+extern int16_t Fan_Control_Internal_Temperature;
 
-void Fan_Control_thread(const void * dummy);
+void Fan_Control_Loop(void);
 
 void Fan_Control_Initialize(void);
 SYSTEM_FAN_RPM_TYPE Fan_Control_Get_RPM(uint8_t fan_id);

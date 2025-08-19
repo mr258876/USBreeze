@@ -3,7 +3,7 @@ packingInBytes = 1
 
 [[usagePage]]
 id = 65308
-name = 'Vendor Usage Page'
+name = 'USBreeze Fan Usage Page'
 
     [[usagePage.usage]]
     id = 1
@@ -13,6 +13,16 @@ name = 'Vendor Usage Page'
     [[usagePage.usage]]
     id = 2
     name = 'Fan Control Level'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 17
+    name = 'Sensors'
+    types = ['CL']
+
+    [[usagePage.usage]]
+    id = 18
+    name = 'Temp Sensor'
     types = ['DV']
 
 [[applicationCollection]]
@@ -43,10 +53,20 @@ usage = ['Generic Desktop', 'Computer Chassis Device']
     [[applicationCollection.featureReport]]
 
         [[applicationCollection.featureReport.logicalCollection]]
-        usage = ['Vendor Usage Page', 'Fan Controls']
+        usage = ['USBreeze Fan Usage Page', 'Fan Controls']
 
             [[applicationCollection.featureReport.logicalCollection.variableItem]]
-                usage = ['Vendor Usage Page', 'Fan Control Level']
+                usage = ['USBreeze Fan Usage Page', 'Fan Control Level']
                 logicalValueRange = [0, 100]
                 count = 8
+    
+    [[applicationCollection.featureReport]]
+
+        [[applicationCollection.featureReport.logicalCollection]]
+        usage = ['USBreeze Fan Usage Page', 'Sensors']
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreeze Fan Usage Page', 'Temp Sensor']
+                logicalValueRange = [-400, 1200]
+                count = 1
 
