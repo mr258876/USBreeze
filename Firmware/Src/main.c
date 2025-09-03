@@ -10,6 +10,7 @@
 
 #include "FanControl.h"
 #include "RGBControl.h"
+#include "ParamStorage.h"
 
 #include "stm32f10x_iwdg.h"
 
@@ -26,9 +27,11 @@ int main(void)
 	osKernelInitialize(); // initialize CMSIS-RTOS
 
 	// initialize peripherals here
-	Fan_Control_Initialize();
-
 	BSP_Initialize();
+	
+	EE_Init();
+
+	Fan_Control_Initialize();
 
 	GPIO_WriteBit(GPIOD, GPIO_Pin_2, 1);
 	
@@ -63,7 +66,7 @@ int main(void)
 	while (1)
 	{
 		IWDG_ReloadCounter();
-		if (osKernelSysTick() - last_fan_update_tick >= 500)
+		if (osKernelSysTick() - last_fan_update_tick >= osKernelSysTickMicroSec(1000 * SYSTEM_UPDATE_INTERVAL_MS))
 		{
 		  Fan_Control_Loop();
 			last_fan_update_tick = osKernelSysTick();

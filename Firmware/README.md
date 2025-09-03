@@ -55,7 +55,7 @@ RAM         0x20000000  0x2800
 ```
 - The last 2K bytes is reserved for config storage.
 
-Please also configure your Xtal freq to `8.0` Mhz, ARM compiler version to `Version 5` in `Target` tab of target options,  and enable `C99 Mode` in `C/C++` tab.
+Please also configure your Xtal freq to `8.0` Mhz, ARM compiler version to `Version 5`, `Use MicroLIB` enabled in `Target` tab of target options, and enable `C99 Mode` in `C/C++` tab.
 
 ### Configureations
 

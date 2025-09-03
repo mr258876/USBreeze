@@ -7,8 +7,8 @@ A STM32-based USB PWM fan controller for PCs with RGB/ARGB lighting support (Win
 
 ## Features
 
-- ~~8× PWM fan channels with RPM monitoring~~ TODO
-- ~~Offline fan control using the STM32 on-chip temperature sensor and customizable fan curves (works without host software)~~ TODO
+- 8× PWM fan channels with RPM monitoring
+- Offline fan control using the STM32 on-chip temperature sensor and customizable fan curves (works without host software)
 - HID LampArray–implemented ARGB control; compatible with Windows 11 Dynamic Lighting
 - 3 configurable ARGB channels, supporting up to 256 LEDs in total
 

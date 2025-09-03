@@ -16,17 +16,29 @@
 
 /*-------------------- F A N --------------------*/
 
-#define FAN_CONTROL_RPM_INPUT_REPORT_ID     1
-#define FAN_CONTROL_RPM_OUTPUT_REPORT_ID    1
-#define FAN_CONTROL_LEVEL_REPORT_ID         1
+#define FAN_INFO_REPORT_ID          1
+#define FAN_PWM_REPORT_ID           2
+#define FAN_TEMP_SENSOR_REPORT_ID   3
+#define FAN_HOST_OVERRIDE_REPORT    4
+#define FAN_CURVE_CFG_REPORT        5
+#define FAN_CURVE_POINTS_REPORT     6
 
-void Fan_Control_Notify_Host_RPM(void);
+#define FAN_RPM_REPORT_DATA_CNT     4
+#define FAN_TEMP_REPORT_DATA_CNT    8
+#define FAN_CONTROL_REPORT_DATA_CNT 8
+#define FAN_CURVE_POINT_DATA_CNT    4
 
-int32_t Fan_Control_Copy_RPM_To_Buffer(uint8_t *buf);
-int32_t Fan_Control_Copy_Fan_Level_To_Buffer(uint8_t *buf);
-int32_t Fan_Control_Copy_Internal_Temp_To_Buffer(uint8_t *buf);
-// bool Fan_Control_Set_RPM_From_Host(const uint8_t *buf, int32_t len);
-bool Fan_Control_Set_Fan_Level_From_Host(const uint8_t *buf, int32_t len);
+int32_t Fan_Control_Get_Info_Report(uint8_t *buf);
+int32_t Fan_Control_Get_RPM_Report(uint8_t *buf);
+int32_t Fan_Control_Get_Temp_Report(uint8_t *buf);
+int32_t Fan_Control_Get_Control_Report(uint8_t *buf);
+int32_t Fan_Control_Get_Curve_Cfg_Report(uint8_t *buf);
+int32_t Fan_Control_Get_Curve_Point_Report(uint8_t *buf);
+bool Fan_Control_Set_RPM_Report(const uint8_t *buf, int32_t len);
+bool Fan_Control_Set_Temp_Report(const uint8_t *buf, int32_t len);
+bool Fan_Control_Set_Control_Report(const uint8_t *buf, int32_t len);
+bool Fan_Control_Set_Curve_Cfg_Report(const uint8_t *buf, int32_t len);
+bool Fan_Control_Set_Curve_Point_Report(const uint8_t *buf, int32_t len);
 
 /*-------------------- R G B --------------------*/
 
