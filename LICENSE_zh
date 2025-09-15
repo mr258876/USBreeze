@@ -15,6 +15,10 @@ SPDX-License-Identifier 标注，默认遵循以下映射关系：
    许可证：MIT License
    SPDX：MIT
 
+3) FanControl.USBreeze/ 目录（软件源码）
+   License: MIT License
+   SPDX: MIT
+   备注：详情请移步[FanControl.USBreeze](https://github.com/mr258876/FanControl.USBreeze)仓库。
 
 许可证全文参见：
 - LICENSES/CERN-OHL-W-2.0.txt
