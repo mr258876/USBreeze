@@ -32,18 +32,11 @@ static void GPIO_Initialize(void)
 	/* Enable GPIO Periph */
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-
-	/* GPIO D2 LED */
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOD, &GPIO_InitStructure);
 
 	/*
 		GPIO A0-A3 for TIM2 CH1-4 PWM Out (Fan 3-0)
-		GPIO A6-A7 for TIM3 CH1-2 PWM Out (Fan 4-5)
+		GPIO A6-A7 for TIM3 CH1-2 PWM Out (Fan 7-6)
 		GPIO A8-A10 for TIM1 CHA-C PWM Out (WS2812 ARGB)
 	 */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10;
@@ -52,7 +45,7 @@ static void GPIO_Initialize(void)
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	GPIO_ResetBits(GPIOA, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10);
 
-	/* GPIO B0-B1 for TIM3 CH1-2 PWM Out (Fan 6-7) */
+	/* GPIO B0-B1 for TIM3 CH3-4 PWM Out (Fan 5-4) */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -64,7 +57,6 @@ static void GPIO_Initialize(void)
 		GPIO B10-B11 for PWM In (Fan 1-0)
 		GPIO B12-B15 for PWM In (Fan 7-4)
 	 */
-	GPIO_PinRemapConfig(GPIO_FullRemap_TIM3, ENABLE);
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -180,34 +172,34 @@ static void TIM3_Initialize(void)
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	TIM_OCInitTypeDef TIM_OCInitStructure;
 
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 
-	TIM_InternalClockConfig(TIM2);
+	TIM_InternalClockConfig(TIM3);
 
-	/* TIM2 Config */
+	/* TIM3 Config */
 	TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
 	TIM_TimeBaseStructure.TIM_Period = 1000 - 1;  // PWM Freq 1kHz	TimeOut = ((Prescaler + 1) * (Period + 1)) / TimeClockFreq
 	TIM_TimeBaseStructure.TIM_Prescaler = 72 - 1; // Timer Freq 1MHz
 	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
-	/* TIM2 PWM Config */
+	/* TIM3 PWM Config */
 	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	TIM_OCInitStructure.TIM_Pulse = 500;
 
-	TIM_OC1Init(TIM2, &TIM_OCInitStructure);
-	TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Enable);
-	TIM_OC2Init(TIM2, &TIM_OCInitStructure);
-	TIM_OC2PreloadConfig(TIM2, TIM_OCPreload_Enable);
-	TIM_OC3Init(TIM2, &TIM_OCInitStructure);
-	TIM_OC3PreloadConfig(TIM2, TIM_OCPreload_Enable);
-	TIM_OC4Init(TIM2, &TIM_OCInitStructure);
-	TIM_OC4PreloadConfig(TIM2, TIM_OCPreload_Enable);
+	TIM_OC1Init(TIM3, &TIM_OCInitStructure);
+	TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Enable);
+	TIM_OC2Init(TIM3, &TIM_OCInitStructure);
+	TIM_OC2PreloadConfig(TIM3, TIM_OCPreload_Enable);
+	TIM_OC3Init(TIM3, &TIM_OCInitStructure);
+	TIM_OC3PreloadConfig(TIM3, TIM_OCPreload_Enable);
+	TIM_OC4Init(TIM3, &TIM_OCInitStructure);
+	TIM_OC4PreloadConfig(TIM3, TIM_OCPreload_Enable);
 
-	TIM_Cmd(TIM2, ENABLE);
+	TIM_Cmd(TIM3, ENABLE);
 }
 
 static void GPIO_EXTI_Initialize(void)
@@ -247,7 +239,7 @@ static void GPIO_EXTI_Initialize(void)
 	EXTI_Init(&EXTI_InitStructure);
 
 	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);

@@ -1,6 +1,6 @@
 # USBreeze
 
-A STM32-based USB PWM fan controller for PCs with RGB/ARGB lighting support (Windows 11 Dynamic Lighting).  
+A STM32F103-based USB PWM fan controller for PCs with RGB/ARGB lighting support (Windows 11 Dynamic Lighting).  
 
 > [!WARNING]
 > 🚧🚧 PROJECT UNDER CONSTRUCTION 🚧🚧 – use at your own risk.

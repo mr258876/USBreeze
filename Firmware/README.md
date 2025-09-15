@@ -90,10 +90,10 @@ Please configure these values in following files:
 - USB -> USBD_Config_0.c
 ```c
 // Vendor ID assigned by USB-IF (idVendor)
-#define USBD0_DEV_DESC_IDVENDOR         0x16C0  // <- Temporary use
+#define USBD0_DEV_DESC_IDVENDOR         0x1D50  // Thanks to openmoko-usb-oui project
 // Product ID assigned by manufacturer (idProduct)
-#define USBD0_DEV_DESC_IDPRODUCT        0x05DF  // <- Temporary use
-// evice Release Number in binary-coded decimal (bcdDevice)
+#define USBD0_DEV_DESC_IDPRODUCT        0x6193  // Visit: https://github.com/openmoko/openmoko-usb-oui
+// Device Release Number in binary-coded decimal (bcdDevice)
 #define USBD0_DEV_DESC_BCDDEVICE        0x0100
 
 // Configuration Settings

@@ -32,8 +32,6 @@ int main(void)
 	EE_Init();
 
 	Fan_Control_Initialize();
-
-	GPIO_WriteBit(GPIOD, GPIO_Pin_2, 1);
 	
 	if (USBD_Initialize(0) != usbOK)
 	{
@@ -53,7 +51,6 @@ int main(void)
 	if (osThreadCreate(osThread(RGB_Control_thread), NULL) == NULL)
 	{
 		// Thread Create Failed
-		 GPIO_WriteBit(GPIOD, GPIO_Pin_2, 0);
 		// pass
 	}
 

@@ -106,9 +106,13 @@ static void Fan_Control_Update_Fan_Level(void)
 	for (size_t fan_id = 0; fan_id < SYSTEM_FAN_COUNT; fan_id++)
 	{
 		if (fan_id < 4)
-			Fan_Control_Set_Level_TIM2(fan_id, Fan_Control_Levels[fan_id] & 0x7FFF);
+		{
+			Fan_Control_Set_Level_TIM2(fan_id, (Fan_Control_Levels[fan_id] & 0x7FFF));
+		}
 		else if (fan_id < 8)
-			Fan_Control_Set_Level_TIM3(fan_id - 4, Fan_Control_Levels[fan_id] & 0x7FFF);
+		{
+			Fan_Control_Set_Level_TIM3(fan_id - 4, (Fan_Control_Levels[fan_id] & 0x7FFF));
+		}
 	}
 }
 
@@ -232,6 +236,4 @@ void Fan_Control_Loop(void)
 	Fan_Control_Calc_Fan_Level();
 
 	Fan_Control_Update_Fan_Level();
-
-	GPIO_WriteBit(GPIOD, GPIO_Pin_2, !GPIO_ReadOutputDataBit(GPIOD, GPIO_Pin_2));
 }

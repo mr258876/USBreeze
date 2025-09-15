@@ -40,7 +40,7 @@ typedef __packed struct
 {
     uint8_t FanControlIdOffset;
     uint8_t FanControlsInPacket;
-    int16_t FanControlValues[FAN_CONTROL_REPORT_DATA_CNT];
+    uint16_t FanControlValues[FAN_CONTROL_REPORT_DATA_CNT];
 } FanControlValueReport;
 
 typedef __packed struct
@@ -106,7 +106,7 @@ int32_t Fan_Control_Get_Temp_Report(uint8_t *buf)
 
     for (int i = 0; i < _buf->TempSensorsInPacket; ++i)
     {
-        _buf->TempSensorValues[i] = Fan_Control_Get_RPM(Fan_Temp_Sensor_Report_Offset + i);
+        _buf->TempSensorValues[i] = Fan_Control_Temperature[Fan_Temp_Sensor_Report_Offset + i];
     }
 
     if (Fan_Temp_Sensor_Report_Offset + _buf->TempSensorsInPacket >= SYSTEM_TEMP_SENSOR_COUNT)

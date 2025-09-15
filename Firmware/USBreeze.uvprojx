@@ -549,7 +549,7 @@
       <component Cbundle="MDK-Plus" Cclass="USB" Cgroup="Device" Csub="HID" Cvendor="Keil" Cversion="6.15.0" condition="USB Core and Device Instance and Device Driver" maxInstances="4">
         <package license="license.rtf" name="MDK-Middleware" schemaVersion="1.4" url="http://www.keil.com/pack/" vendor="Keil" version="7.13.0"/>
         <targetInfos>
-          <targetInfo instances="4" name="Target 1" versionMatchMode=""/>
+          <targetInfo instances="4" name="Target 1"/>
         </targetInfos>
       </component>
       <component Capiversion="2.1" Cclass="CMSIS Driver" Cgroup="USB Device" Cvendor="Keil" Cversion="2.2" condition="STM32F102_3 CMSIS RTOS GPIO">
