@@ -40,9 +40,11 @@ Control lighting from **Settings -> Personalization -> Dynamic lighting** (effec
 
 ### Fan Control
 
-#### 
+#### Basic Controls
 
-- TODO
+Conrtolling using [FanControl](https://github.com/Rem0o/FanControl.Releases) is recommended.
+
+Install both FanControl and [FanControl.USBreeze](https://github.com/mr258876/FanControl.USBreeze) plugin, and good to go!
 
 #### Offline Fan Curve Configurations
 
