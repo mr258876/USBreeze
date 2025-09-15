@@ -70,8 +70,8 @@ SPDX-License-Identifier, the following defaults apply:
    - SPDX: MIT
 
 3) FanControl.USBreeze/  (software source code)
-   License: MIT License
-   SPDX: MIT
-   Notes: see [FanControl.USBreeze](https://github.com/mr258876/FanControl.USBreeze) repository.
+   - License: MIT License
+   - SPDX: MIT
+   - Notes: see [FanControl.USBreeze](https://github.com/mr258876/FanControl.USBreeze) repository.
 
 Copyright © 2025 mr258876
