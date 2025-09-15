@@ -32,6 +32,7 @@ int main(void)
 	EE_Init();
 
 	Fan_Control_Initialize();
+	RGB_Control_Initialize();
 	
 	if (USBD_Initialize(0) != usbOK)
 	{

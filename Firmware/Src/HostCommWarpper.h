@@ -42,6 +42,16 @@ bool Fan_Control_Set_Curve_Point_Report(const uint8_t *buf, int32_t len);
 
 /*-------------------- R G B --------------------*/
 
+#define RGB_CONFIG_INFO_REPORT_ID               7
+#define RGB_CONFIG_HID_CHANNEL_MAP_REPORT_ID    8
+#define RGB_CONFIG_PHY_CHANNEL_MAP_REPORT_ID    9
+
+int32_t RGB_Config_Get_Info_Report(uint8_t *buf);
+int32_t RGB_Config_Get_Hid_Channel_Map_Report(uint8_t *buf);
+int32_t RGB_Config_Get_Phy_Channel_Map_Report(uint8_t *buf);
+bool RGB_Config_Set_Hid_Channel_Map_Report(const uint8_t *buf, int32_t len);
+bool RGB_Config_Set_Phy_Channel_Map_Report(const uint8_t *buf, int32_t len);
+
 #define RGB_LAMP_ARRAY_ATTRIBUTES_REPORT_ID     1
 #define RGB_LAMP_ATTRIBUTES_REQUEST_REPORT_ID   2
 #define RGB_LAMP_ATTRIBUTES_RESPONSE_REPORT_ID  3

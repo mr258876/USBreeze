@@ -21,10 +21,10 @@
 #define RGB_BOUNDING_BOX_HEIGHT_Z   10000   // In Micrometers
 #endif
 
-#define RGB_CONTROL_CHANNELS_COUNT          3
-#define RGB_CONTROL_CHANNEL_A_LAMP_COUNT    128
-#define RGB_CONTROL_CHANNEL_B_LAMP_COUNT    64
-#define RGB_CONTROL_CHANNEL_C_LAMP_COUNT    64
+#define RGB_CONTROL_HID_CHANNELS_COUNT      3
+#define RGB_CONTROL_PHY_CHANNELS_COUNT      3
+extern uint16_t RGB_Hid_Channel_Lamp_Map[RGB_CONTROL_HID_CHANNELS_COUNT][2];    // For each channel, element 0 for lamp id offset
+extern uint16_t RGB_Phy_Channel_Lamp_Map[RGB_CONTROL_PHY_CHANNELS_COUNT][2];    // element 1 for lamp count
 
 #define RGB_CHANNELS_PER_LAMP       3
 
@@ -32,7 +32,7 @@
 #define RGB_WS2812_PIN              GPIO_Pin_8
 
 #define RGB_WS2812_BITS_PER_LED     24
-#define RGB_WS2812_BUFFER_SIZE      RGB_WS2812_BITS_PER_LED * RGB_CONTROL_CHANNELS_COUNT * 2 // <- Ping-pong buffer, contains data of 2 lamps
+#define RGB_WS2812_BUFFER_SIZE      RGB_WS2812_BITS_PER_LED * RGB_CONTROL_PHY_CHANNELS_COUNT * 2 // <- Ping-pong buffer, contains data of 2 lamps
 #define RGB_WS2812_ARR              90      // Autoreload value of TIM1
 #define RGB_WS2812_T0H              30		// 1/3 high for a 0bit
 #define RGB_WS2812_T1H              60		// 2/3 high for a 1bit
@@ -53,6 +53,9 @@ extern const LampPosition RGB_Lamp_Positions[]; // ID count MUST match the size 
 #endif
 
 extern osMessageQId RGB_Update_Msg_Queue;
+
+void RGB_Control_Initialize(void);
+void RGB_Control_Save_Settings_Flash(void);
 
 void RGB_Control_thread(const void * dummy);
 

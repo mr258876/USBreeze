@@ -243,12 +243,12 @@ bool Fan_Control_Set_Curve_Cfg_Report(const uint8_t *buf, int32_t len)
 
     Fan_Curve_Cfg_Report_Fan_Id = _buf->FanId;
 
-    if ((_buf->OpFlags) & 0x1)
+    if ((_buf->OpFlags) & 1)
     {
         Fan_Control_Curve_Cfgs[Fan_Curve_Cfg_Report_Fan_Id] = _buf->CurveCfg;
     }
 
-    if ((_buf->OpFlags >> 1) & 0x1)
+    if ((_buf->OpFlags >> 1) & 1)
     {
         Fan_Control_Save_Settings_Flash();
     }

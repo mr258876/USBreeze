@@ -5,6 +5,7 @@
         "rgbcontrol.h": "c",
         "bsp.h": "c",
         "paramstoragekeys.h": "c",
-        "paramstorage.h": "c"
+        "paramstorage.h": "c",
+        "paramstoragewarpper.h": "c"
     }
 }

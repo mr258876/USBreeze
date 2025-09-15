@@ -414,6 +414,11 @@
               <FilePath>.\Src\HostCommWarpperFan.c</FilePath>
             </File>
             <File>
+              <FileName>HostCommWarpperRGBConfig.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\HostCommWarpperRGBConfig.c</FilePath>
+            </File>
+            <File>
               <FileName>HostCommWarpperRGB.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Src\HostCommWarpperRGB.c</FilePath>
@@ -437,6 +442,11 @@
               <FileName>ParamStorage.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Src\ParamStorage.c</FilePath>
+            </File>
+            <File>
+              <FileName>ParamStorageWarpperRGB.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Src\ParamStorageWarpperRGB.c</FilePath>
             </File>
             <File>
               <FileName>ParamStorageWarpperFan.c</FileName>

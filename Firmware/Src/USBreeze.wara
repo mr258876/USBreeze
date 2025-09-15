@@ -175,6 +175,81 @@ name = 'USBreezeUsagePage'
     name = 'CurvePointPWM'
     types = ['DV']
 
+    [[usagePage.usage]]
+    id = 0xE0
+    name = 'RgbInfoReport'
+    types = ['CL']
+
+    [[usagePage.usage]]
+    id = 0xE1
+    name = 'RgbHidChannelCount'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 0xE2
+    name = 'RgbPhyChannelCount'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 0xE3
+    name = 'RgbLedCapacity'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 0xE4
+    name = 'RgbDebugDataFormat'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 0xE5
+    name = 'RgbHidChannelId'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 0xE6
+    name = 'RgbPhyChannelId'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 0xD0
+    name = 'RgbHidChannelMapReport'
+    types = ['CL']
+
+    [[usagePage.usage]]
+    id = 0xD1
+    name = 'RgbHidChannelFlag'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 0xD2
+    name = 'RgbHidChannelStartId'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 0xD3
+    name = 'RgbHidChannelLedCount'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 0xC0
+    name = 'RgbPhyChannelMapReport'
+    types = ['CL']
+
+    [[usagePage.usage]]
+    id = 0xC1
+    name = 'RgbPhyChannelFlag'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 0xC2
+    name = 'RgbPhyChannelStartId'
+    types = ['DV']
+
+    [[usagePage.usage]]
+    id = 0xC3
+    name = 'RgbPhyChannelLedCount'
+    types = ['DV']
+
 [[applicationCollection]]
 usage = ['USBreezeUsagePage', 'USBreezeController']
     
@@ -394,4 +469,91 @@ usage = ['USBreezeUsagePage', 'USBreezeController']
             [[applicationCollection.featureReport.logicalCollection.variableItem]]
                 usage = ['USBreezeUsagePage', 'CurvePointPWM']
                 sizeInBits = 16
+                count = 1
+
+    [[applicationCollection.featureReport]]
+
+        [[applicationCollection.featureReport.logicalCollection]]
+        usage = ['USBreezeUsagePage', 'RgbInfoReport']
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbHidChannelCount']
+                sizeInBits = 8
+                logicalValueRange = 'maxUnsignedSizeRange'
+                count = 1
+                
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbPhyChannelCount']
+                sizeInBits = 8
+                logicalValueRange = 'maxUnsignedSizeRange'
+                count = 1
+            
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbLedCapacity']
+                sizeInBits = 16
+                logicalValueRange = 'maxUnsignedSizeRange'
+                count = 1
+            
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbDebugDataFormat']
+                sizeInBits = 8
+                logicalValueRange = 'maxUnsignedSizeRange'
+                count = 1
+    
+    [[applicationCollection.featureReport]]
+
+        [[applicationCollection.featureReport.logicalCollection]]
+        usage = ['USBreezeUsagePage', 'RgbHidChannelMapReport']
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbHidChannelFlag']
+                sizeInBits = 8
+                logicalValueRange = 'maxUnsignedSizeRange'
+                count = 1
+            
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbHidChannelId']
+                sizeInBits = 8
+                logicalValueRange = 'maxUnsignedSizeRange'
+                count = 1
+            
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbHidChannelStartId']
+                sizeInBits = 16
+                logicalValueRange = 'maxUnsignedSizeRange'
+                count = 1
+            
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbHidChannelLedCount']
+                sizeInBits = 16
+                logicalValueRange = 'maxUnsignedSizeRange'
+                count = 1
+    
+    [[applicationCollection.featureReport]]
+
+        [[applicationCollection.featureReport.logicalCollection]]
+        usage = ['USBreezeUsagePage', 'RgbPhyChannelMapReport']
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbPhyChannelFlag']
+                sizeInBits = 8
+                logicalValueRange = 'maxUnsignedSizeRange'
+                count = 1
+            
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbPhyChannelId']
+                sizeInBits = 8
+                logicalValueRange = 'maxUnsignedSizeRange'
+                count = 1
+
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbPhyChannelStartId']
+                sizeInBits = 16
+                logicalValueRange = 'maxUnsignedSizeRange'
+                count = 1
+            
+            [[applicationCollection.featureReport.logicalCollection.variableItem]]
+                usage = ['USBreezeUsagePage', 'RgbPhyChannelLedCount']
+                sizeInBits = 16
+                logicalValueRange = 'maxUnsignedSizeRange'
                 count = 1

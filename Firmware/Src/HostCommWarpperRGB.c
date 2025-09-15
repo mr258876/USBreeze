@@ -120,16 +120,11 @@ static const LampAttributes RGB_Lamp_Attributes_Template = {
 static const uint16_t RGB_Lamp_Count_By_Instances[] = {RGB_LAMP_INSTANCE_0_LAMP_COUNT, RGB_LAMP_INSTANCE_1_LAMP_COUNT, RGB_LAMP_INSTANCE_2_LAMP_COUNT};
 static uint16_t RGB_Attributes_Request_Report_Lamp_ID[] = {0, 0, 0};
 
-static inline uint16_t RGB_Instance_Get_Lamp_Paddings(uint8_t instance)
+static inline uint16_t RGB_Hid_Instance_Get_Lamp_Paddings(uint8_t instance)
 {
-    if (instance >= RGB_LAMP_INSTANCES_COUNT) return 0;
+    if (instance >= RGB_LAMP_INSTANCES_COUNT || instance >= RGB_CONTROL_HID_CHANNELS_COUNT) return 0;
 
-    uint16_t result = 0;
-    for (int i = 0; i < instance; i++)
-    {
-        result += RGB_Lamp_Count_By_Instances[i];   // <- Temporary solution.
-    }
-    return result;
+    return RGB_Hid_Channel_Lamp_Map[instance][0];
 }
 
 int32_t RGB_Control_Get_Attr_Report(uint8_t instance, uint8_t *buf)
@@ -171,9 +166,9 @@ int32_t RGB_Control_Get_Attributes_Response(uint8_t instance, uint8_t *buf)
     LampAttributes *_buf = (LampAttributes *)buf;
     _buf->LampId = RGB_Attributes_Request_Report_Lamp_ID[instance];
 #if RGB_CUSTOM_LAMP_POSITIONS
-    _buf->PositionXInMicrometers = RGB_Lamp_Positions[RGB_Instance_Get_Lamp_Paddings(instance) + RGB_Attributes_Request_Report_Lamp_ID[instance]][0] * 1000;
-    _buf->PositionYInMicrometers = RGB_Lamp_Positions[RGB_Instance_Get_Lamp_Paddings(instance) + RGB_Attributes_Request_Report_Lamp_ID[instance]][1] * 1000;
-    _buf->PositionZInMicrometers = RGB_Lamp_Positions[RGB_Instance_Get_Lamp_Paddings(instance) + RGB_Attributes_Request_Report_Lamp_ID[instance]][2] * 1000;
+    _buf->PositionXInMicrometers = RGB_Lamp_Positions[RGB_Hid_Instance_Get_Lamp_Paddings(instance) + RGB_Attributes_Request_Report_Lamp_ID[instance]][0] * 1000;
+    _buf->PositionYInMicrometers = RGB_Lamp_Positions[RGB_Hid_Instance_Get_Lamp_Paddings(instance) + RGB_Attributes_Request_Report_Lamp_ID[instance]][1] * 1000;
+    _buf->PositionZInMicrometers = RGB_Lamp_Positions[RGB_Hid_Instance_Get_Lamp_Paddings(instance) + RGB_Attributes_Request_Report_Lamp_ID[instance]][2] * 1000;
 #else
     _buf->PositionXInMicrometers = RGB_Attributes_Request_Report_Lamp_ID[instance] * 1000;
     _buf->PositionYInMicrometers = 1000;
@@ -219,9 +214,9 @@ bool RGB_Control_Set_Multi_Update(uint8_t instance, const uint8_t *buf, int32_t 
         if (_buf->LampIds[i] >= RGB_Lamp_Count_By_Instances[instance])
             return false;
 
-        RGB_Lamp_Colors[RGB_Instance_Get_Lamp_Paddings(instance) + _buf->LampIds[i] * 3] = _buf->UpdateColors[i].RedChannel;
-        RGB_Lamp_Colors[RGB_Instance_Get_Lamp_Paddings(instance) + _buf->LampIds[i] * 3 + 1] = _buf->UpdateColors[i].GreenChannel;
-        RGB_Lamp_Colors[RGB_Instance_Get_Lamp_Paddings(instance) + _buf->LampIds[i] * 3 + 2] = _buf->UpdateColors[i].BlueChannel;
+        RGB_Lamp_Colors[RGB_Hid_Instance_Get_Lamp_Paddings(instance) + _buf->LampIds[i] * 3] = _buf->UpdateColors[i].RedChannel;
+        RGB_Lamp_Colors[RGB_Hid_Instance_Get_Lamp_Paddings(instance) + _buf->LampIds[i] * 3 + 1] = _buf->UpdateColors[i].GreenChannel;
+        RGB_Lamp_Colors[RGB_Hid_Instance_Get_Lamp_Paddings(instance) + _buf->LampIds[i] * 3 + 2] = _buf->UpdateColors[i].BlueChannel;
     }
 
     if (_buf->LampUpdateFlags & 1)
@@ -246,9 +241,9 @@ bool RGB_Control_Set_Range_Update(uint8_t instance, const uint8_t *buf, int32_t 
 
     for (int i = _buf->LampIdStart; i <= _buf->LampIdEnd; i++)
     {
-        RGB_Lamp_Colors[RGB_Instance_Get_Lamp_Paddings(instance) + i * 3] = _buf->UpdateColor.RedChannel;
-        RGB_Lamp_Colors[RGB_Instance_Get_Lamp_Paddings(instance) + i * 3 + 1] = _buf->UpdateColor.GreenChannel;
-        RGB_Lamp_Colors[RGB_Instance_Get_Lamp_Paddings(instance) + i * 3 + 2] = _buf->UpdateColor.BlueChannel;
+        RGB_Lamp_Colors[RGB_Hid_Instance_Get_Lamp_Paddings(instance) + i * 3] = _buf->UpdateColor.RedChannel;
+        RGB_Lamp_Colors[RGB_Hid_Instance_Get_Lamp_Paddings(instance) + i * 3 + 1] = _buf->UpdateColor.GreenChannel;
+        RGB_Lamp_Colors[RGB_Hid_Instance_Get_Lamp_Paddings(instance) + i * 3 + 2] = _buf->UpdateColor.BlueChannel;
     }
 
     if (_buf->LampUpdateFlags & 1)
